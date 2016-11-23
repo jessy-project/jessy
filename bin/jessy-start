@@ -9,14 +9,18 @@ import logging
 import yaml
 import argparse
 
-from client import tts
-from client import stt
-from client import jasperpath
-from client import diagnose
-from client.conversation import Conversation
+# HACK: remove this away and use virtualenv!
+sys.path.append(os.path.sep.join(os.path.dirname(os.path.abspath(__file__)).split(os.path.sep)[:-1]))
+
+from jessy import tts
+from jessy import stt
+from jessy import jasperpath
+from jessy import diagnose
+from jessy.conversation import Conversation
 
 # Add jasperpath.LIB_PATH to sys.path
 sys.path.append(jasperpath.LIB_PATH)
+print jasperpath.LIB_PATH
 
 parser = argparse.ArgumentParser(description='Jessy Voice Control Center')
 parser.add_argument('--local', action='store_true',
@@ -29,9 +33,9 @@ parser.add_argument('--debug', action='store_true', help='Show debug messages')
 args = parser.parse_args()
 
 if args.local:
-    from client.local_mic import Mic
+    from jessy.local_mic import Mic
 else:
-    from client.mic import Mic
+    from jessy.mic import Mic
 
 
 class Jessy(object):
@@ -127,7 +131,7 @@ if __name__ == "__main__":
 
     logging.basicConfig()
     logger = logging.getLogger()
-    logger.getChild("client.stt").setLevel(logging.INFO)
+    logger.getChild("jessy.stt").setLevel(logging.INFO)
 
     if args.debug:
         logger.setLevel(logging.DEBUG)

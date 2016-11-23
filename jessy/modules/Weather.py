@@ -6,7 +6,7 @@ import urllib
 import feedparser
 import requests
 import bs4
-from client.app_utils import getTimezone
+from jessy.app_utils import getTimezone
 from semantic.dates import DateService
 
 WORDS = ["WEATHER", "TODAY", "TOMORROW"]
