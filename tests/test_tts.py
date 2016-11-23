@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8-*-
 import unittest
-from client import tts
+from jessy import tts
 
 
 class TestTTS(unittest.TestCase):

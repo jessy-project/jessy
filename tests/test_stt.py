@@ -2,7 +2,7 @@
 # -*- coding: utf-8-*-
 import unittest
 import imp
-from client import stt, jasperpath
+from jessy import stt, jasperpath
 
 
 def cmuclmtk_installed():
