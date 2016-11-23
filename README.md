@@ -1,3 +1,7 @@
+# NOTE: Soon to be renamed
+
+Seems like original Jasper is abandoned. This soon to be renamed and go its own way.
+
 jasper-client
 =============
 
