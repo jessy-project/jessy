@@ -5,7 +5,7 @@ Jessy is based on
 since the project has been abandoned and pull requests are stuck there
 forever, Jessy came to existence.
 
-Client code for the Jessie voice computing platform. Jessy is an open
+Client code for the Jessy voice computing platform. Jessy is an open
 source platform for developing always-on, voice-controlled
 applications. 
 
