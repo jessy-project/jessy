@@ -2,7 +2,7 @@
 import datetime
 import re
 import facebook
-from client.app_utils import getTimezone
+from jessy.app_utils import getTimezone
 
 WORDS = ["BIRTHDAY"]
 

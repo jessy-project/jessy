@@ -3,7 +3,7 @@
 import unittest
 import tempfile
 import mock
-from client import g2p
+from jessy import g2p
 
 
 def phonetisaurus_installed():
@@ -53,7 +53,7 @@ class TestPatchedG2P(unittest.TestCase):
                     "UGLY\t18.9617\t<s> AH G L AY </s>\n", "")
 
     def setUp(self):
-        with mock.patch('client.g2p.diagnose.check_executable',
+        with mock.patch('jessy.g2p.diagnose.check_executable',
                         return_value=True):
             with tempfile.NamedTemporaryFile() as f:
                 conf = g2p.PhonetisaurusG2P.get_config().items()
