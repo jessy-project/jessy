@@ -1,40 +1,43 @@
-# NOTE: Soon to be renamed
+# Jessy: it is like Alexa, but closer to you
 
-Seems like original Jasper is abandoned. This soon to be renamed and go its own way.
+Jessy is based on
+[jasperproject.github.io](http://jasperproject.github.io/). However,
+since the project has been abandoned and pull requests are stuck there
+forever, Jessy came to existence.
 
-jasper-client
-=============
+Client code for the Jessie voice computing platform. Jessy is an open
+source platform for developing always-on, voice-controlled
+applications. 
 
-[![Build Status](https://travis-ci.org/jasperproject/jasper-client.svg?branch=master)](https://travis-ci.org/jasperproject/jasper-client) [![Coverage Status](https://img.shields.io/coveralls/jasperproject/jasper-client.svg)](https://coveralls.io/r/jasperproject/jasper-client) [![Codacy Badge](https://www.codacy.com/project/badge/3a50e1bc2261419894d76b7e2c1ac694)](https://www.codacy.com/app/jasperproject/jasper-client)
-
-Client code for the Jasper voice computing platform. Jasper is an open source platform for developing always-on, voice-controlled applications.
-
-Learn more at [jasperproject.github.io](http://jasperproject.github.io/), where we have assembly and installation instructions, as well as extensive documentation. For the relevant disk image, please visit [SourceForge](http://sourceforge.net/projects/jasperproject/).
+Installation process, documentation and other data right now is
+identical as on Jasper project:
+[jasperproject.github.io](http://jasperproject.github.io/).
 
 ## Contributing
 
-If you'd like to contribute to Jasper, please read through our **[Contributing Guide](CONTRIBUTING.md)**, which outlines the philosophies to preserve, tests to run, and more. We highly recommend reading through this guide before writing any code.
+If you'd like to contribute to Jessy, please read through our
+**[Contributing Guide](CONTRIBUTING.md)**, which outlines the
+philosophies to preserve, tests to run, and more. We highly recommend
+reading through this guide before writing any code.
 
-The Contributing Guide also outlines some prospective features and areas that could use love. However, for a more thorough overview of Jasper's direction and goals, check out the **[Product Roadmap](https://github.com/jasperproject/jasper-client/wiki/Roadmap)**.
-
-Thanks in advance for any and all work you contribute to Jasper!
+Thanks in advance for any and all work you contribute to Jessy!
 
 ## Support
 
-If you run into an issue or require technical support, please first look through the closed and open **[GitHub Issues](https://github.com/jasperproject/jasper-client/issues)**, as you may find a solution there (or some useful advice, at least).
-
-If you're still having trouble, the next place to look would be the new **[Google Group support forum](https://groups.google.com/forum/#!forum/jasper-support-forum)** or join the `#jasper` IRC channel on **chat.freenode.net**. If your problem remains unsolved, feel free to create a post there describing the issue, the steps you've taken to debug it, etc.
-
-## Contact
-
-Jasper's core developers are [Shubhro Saha](http://www.shubhro.com), [Charles Marsh](http://www.crmarsh.com) and [Jan Holthuis](http://homepage.ruhr-uni-bochum.de/Jan.Holthuis/).  All of them can be reached by email at [saha@princeton.edu](mailto:saha@princeton.edu), [crmarsh@princeton.edu](mailto:crmarsh@princeton.edu) and [jan.holthuis@ruhr-uni-bochum.de](mailto:jan.holthuis@ruhr-uni-bochum.de) respectively. However, for technical support and other problems, please go through the channels mentioned above.
-
-For a complete list of code contributors, please see [AUTHORS.md](AUTHORS.md).
+If you run into an issue or require technical support, please first
+look through the closed and open
+**[GitHub Issues](https://github.com/isbm/jessy/issues)**,
+as you may find a solution there (or some useful advice, at least).
 
 ## License
 
-*Copyright (c) 2014-2015, Charles Marsh, Shubhro Saha & Jan Holthuis. All rights reserved.*
+*Copyright (c) for portions of project Jasper are held by Charles
+Marsh (2014-1015), Shubhro Saha  (2014-1015), Jan Holthuis
+(2014-1015). All other copyright (c) for project Jessy is held by Bo
+Maryniuk (2016). All rights reserved.*
 
-Jasper is covered by the MIT license, a permissive free software license that lets you do anything you want with the source code, as long as you provide back attribution and ["don't hold \[us\] liable"](http://choosealicense.com). For the full license text see the [LICENSE.md](LICENSE.md) file.
-
-*Note that this licensing only refers to the Jasper client code (i.e.,  the code on GitHub) and not to the disk image itself (i.e., the code on SourceForge).*
+Jessy is covered by the MIT license, a permissive free software
+license that lets you do anything you want with the source code, as
+long as you provide back attribution and ["don't hold \[us\]
+liable"](http://choosealicense.com). For the full license text see the
+[LICENSE.md](LICENSE.md) file. 
