@@ -12,11 +12,12 @@ import subprocess
 from abc import ABCMeta, abstractmethod
 import requests
 import yaml
-import jasperpath
-import diagnose
-import vocabcompiler
 
+from jessy import jasperpath
+from jessy import diagnose
+from jessy import vocabcompiler
 from jessy.stt import AbstractSTTEngine
+
 
 
 class WitAiSTT(AbstractSTTEngine):
