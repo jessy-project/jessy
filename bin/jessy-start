@@ -17,19 +17,23 @@ from jessy import stt
 from jessy import jasperpath
 from jessy import diagnose
 from jessy.conversation import Conversation
+from jessy.lazyload import LazyLoad
+
 
 # Add jasperpath.LIB_PATH to sys.path
 sys.path.append(jasperpath.LIB_PATH)
-print jasperpath.LIB_PATH
 
 parser = argparse.ArgumentParser(description='Jessy Voice Control Center')
-parser.add_argument('--local', action='store_true',
+parser.add_argument('-l', '--local', action='store_true',
                     help='Use text input instead of a real microphone')
-parser.add_argument('--no-network-check', action='store_true',
+parser.add_argument('-n ', '--no-network-check', action='store_true',
                     help='Disable the network connection check')
-parser.add_argument('--diagnose', action='store_true',
+parser.add_argument('-g', '--diagnose', action='store_true',
                     help='Run diagnose and exit')
-parser.add_argument('--debug', action='store_true', help='Show debug messages')
+parser.add_argument('-d', '--debug', action='store_true', help='Show debug messages')
+parser.add_argument('-t', '--stt', action='store_true', help='List speech to text (STT) engines available')
+parser.add_argument('-s', '--tts', action="store_true", help='List text to speech (TTS) engines available')
+
 args = parser.parse_args()
 
 if args.local:
@@ -44,7 +48,15 @@ class Jessy(object):
     '''
     def __init__(self):
         self._logger = logging.getLogger(__name__)
+        self._stt = LazyLoad().scan('jessy.stt')
 
+    def get_stt_modules(self):
+        '''
+        Return available STT modules.
+        '''
+        return self._stt.modules()
+
+    def initialize():
         # Create config dir if it does not exist yet
         if not os.path.exists(jasperpath.CONFIG_PATH):
             try:
@@ -114,6 +126,7 @@ class Jessy(object):
         self.mic = Mic(tts_engine_class.get_instance(),
                        stt_passive_engine_class.get_passive_instance(),
                        stt_engine_class.get_active_instance())
+        return self
 
     def run(self):
         if 'first_name' in self.config:
@@ -127,8 +140,6 @@ class Jessy(object):
 
 
 if __name__ == "__main__":
-    print("Hello, I am Jessy.")
-
     logging.basicConfig()
     logger = logging.getLogger()
     logger.getChild("jessy.stt").setLevel(logging.INFO)
@@ -144,7 +155,14 @@ if __name__ == "__main__":
         sys.exit(0 if not failed_checks else 1)
 
     try:
-        Jessy().run()
+        jessy = Jessy()
+        if args.stt:
+            print "Available STT engines:\n"
+            for mod in jessy.get_stt_modules():
+                print "  ", mod
+            print
+        else:
+            jessy.initialize().run()
     except Exception:
         logger.error("Error occured!", exc_info=True)
         sys.exit(1)
