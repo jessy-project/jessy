@@ -8,6 +8,7 @@ import os
 import sys
 import shutil
 import logging
+import yaml
 
 from jessy import tts
 from jessy import stt

@@ -18,6 +18,7 @@ import wave
 import urllib
 import urlparse
 import requests
+import yaml
 from abc import ABCMeta, abstractmethod
 
 from jessy import diagnose
