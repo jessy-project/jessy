@@ -45,8 +45,7 @@ class Jessy(object):
             try:
                 os.makedirs(jasperpath.CONFIG_PATH)
             except OSError:
-                self._logger.error("Could not create config dir: '%s'",
-                                   jasperpath.CONFIG_PATH, exc_info=True)
+                self._logger.error("Could not create config dir: '%s'", jasperpath.CONFIG_PATH, exc_info=True)
                 raise
 
         # Check if config dir is writable
@@ -54,24 +53,19 @@ class Jessy(object):
             self._logger.critical("Config dir %s is not writable. Jessy won't work correctly.",
                                   jasperpath.CONFIG_PATH)
 
-        # FIXME: For backwards compatibility, move old config file to newly
-        #        created config dir
         old_configfile = os.path.join(jasperpath.LIB_PATH, 'profile.yml')
         new_configfile = jasperpath.config('profile.yml')
         if os.path.exists(old_configfile):
             if os.path.exists(new_configfile):
-                self._logger.warning("Deprecated profile file found: '%s'. " +
-                                     "Please remove it.", old_configfile)
+                self._logger.warning("Deprecated profile file found: '%s'. Please remove it.",
+                                     old_configfile)
             else:
-                self._logger.warning("Deprecated profile file found: '%s'. " +
-                                     "Trying to copy it to new location '%s'.",
+                self._logger.warning("Deprecated profile file found: '%s'. Trying to copy it to new location '%s'.",
                                      old_configfile, new_configfile)
                 try:
                     shutil.copy2(old_configfile, new_configfile)
                 except shutil.Error:
-                    self._logger.error("Unable to copy config file. " +
-                                       "Please copy it manually.",
-                                       exc_info=True)
+                    self._logger.error("Unable to copy config file. Please copy it manually.", exc_info=True)
                     raise
 
         # Read config
@@ -79,31 +73,17 @@ class Jessy(object):
         try:
             with open(new_configfile, "r") as f:
                 self.config = yaml.safe_load(f)
-        except OSError:
-            self._logger.error("Can't open config file: '%s'", new_configfile)
-            raise
+        except Exception as ex:
+            self._logger.error("Error reading configuration file: '{0}'".format(new_configfile))
+            raise ex
 
-        try:
-            stt_engine_slug = self.config['stt_engine']
-        except KeyError:
-            stt_engine_slug = 'sphinx'
-            logger.warning("stt_engine not specified in profile, defaulting " +
-                           "to '%s'", stt_engine_slug)
-        stt_engine_class = stt.get_engine_by_slug(stt_engine_slug)
-
-        try:
-            slug = self.config['stt_passive_engine']
-            stt_passive_engine_class = stt.get_engine_by_slug(slug)
-        except KeyError:
+        stt_engine_class = self._stt[self.config['stt_engine_ng']].initiator()
+        if 'stt_passive_engine' in self.config:
+            stt_passive_engine_class = self._stt[self.config['stt_passive_engine']].initiator()
+        else:
             stt_passive_engine_class = stt_engine_class
 
-        try:
-            tts_engine_slug = self.config['tts_engine']
-        except KeyError:
-            tts_engine_slug = tts.get_default_engine_slug()
-            logger.warning("tts_engine not specified in profile, defaulting " +
-                           "to '%s'", tts_engine_slug)
-        tts_engine_class = tts.get_engine_by_slug(tts_engine_slug)
+        tts_engine_class = self._tts[self.config['tts_engine_ng']].initiator()
 
         # Initialize Mic
         self.mic = mic(tts_engine_class.get_instance(),
