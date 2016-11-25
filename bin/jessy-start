@@ -44,14 +44,14 @@ if __name__ == "__main__":
     args = get_args()
 
     logging.basicConfig()
-    logger = logging.getLogger()
-    logger.getChild("jessy.stt").setLevel(logging.INFO)
+    log = logging.getLogger()
+    log.getChild("jessy.stt").setLevel(logging.INFO)
 
     if args.debug:
-        logger.setLevel(logging.DEBUG)
+        log.setLevel(logging.DEBUG)
 
     if not args.no_network_check and not diagnose.check_network_connection():
-        logger.warning("Network not connected. This may prevent Jessy from running properly.")
+        log.warning("Network not connected. This may prevent Jessy from running properly.")
 
     if args.diagnose:
         sys.exit(diagnose.run() or 1)
@@ -81,5 +81,5 @@ if __name__ == "__main__":
                 print "Available TTS engines:\n\n{0}\n".format(print_mods(jessy.get_tts_modules()))
 
     except Exception:
-        logger.error("Error occured!", exc_info=True)
+        log.error("Error occured!", exc_info=True)
         sys.exit(1)
