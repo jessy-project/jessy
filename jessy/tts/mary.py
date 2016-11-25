@@ -34,9 +34,6 @@ def is_valid():
     return True
 
 
-initiator = _module_getter(MaryTTS)
-
-
 class MaryTTS(AbstractTTSEngine):
     """
     Uses the MARY Text-to-Speech System (MaryTTS)
@@ -130,3 +127,6 @@ class MaryTTS(AbstractTTSEngine):
             tmpfile = f.name
         self.play(tmpfile)
         os.remove(tmpfile)
+
+
+initiator = _module_getter(MaryTTS)

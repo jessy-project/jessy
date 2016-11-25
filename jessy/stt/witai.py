@@ -19,7 +19,6 @@ from jessy import vocabcompiler
 from jessy.stt import AbstractSTTEngine
 from jessy.utils import _module_getter
 
-initiator = _module_getter(WitAiSTT)
 
 def is_valid():
     '''
@@ -112,3 +111,6 @@ class WitAiSTT(AbstractSTTEngine):
     @classmethod
     def is_available(cls):
         return diagnose.check_network_connection()
+
+
+initiator = _module_getter(WitAiSTT)
