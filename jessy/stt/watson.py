@@ -1,21 +1,13 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8-*-
 import os
 import wave
-import json
-import tempfile
 import logging
-import urllib
-import urlparse
-import re
-import subprocess
-from abc import ABCMeta, abstractmethod
 import requests
 import yaml
 
 from jessy import jasperpath
 from jessy import diagnose
-from jessy import vocabcompiler
+from jessy.utils import _module_getter
 from jessy.stt import AbstractSTTEngine
 
 

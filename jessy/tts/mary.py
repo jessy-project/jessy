@@ -8,18 +8,11 @@ Speaker methods:
     is_available - returns True if the platform supports this implementation
 """
 import os
-import platform
-import re
 import tempfile
-import subprocess
-import pipes
-import logging
-import wave
 import urllib
 import urlparse
 import requests
 import yaml
-from abc import ABCMeta, abstractmethod
 
 from jessy import diagnose
 from jessy import jasperpath

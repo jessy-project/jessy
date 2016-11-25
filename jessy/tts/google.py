@@ -8,22 +8,13 @@ Speaker methods:
     is_available - returns True if the platform supports this implementation
 """
 import os
-import platform
-import re
 import tempfile
-import subprocess
-import pipes
-import logging
-import wave
-import urllib
-import urlparse
-import requests
-from abc import ABCMeta, abstractmethod
+import yaml
 
 from jessy import diagnose
 from jessy import jasperpath
 from jessy.utils import _module_getter
-from jessy.tts import AbstractTTSEngine
+from jessy.tts import AbstractMp3TTSEngine
 
 try:
     import gtts
