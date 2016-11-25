@@ -38,7 +38,7 @@ class Jessy(object):
         '''
         return self._tts.modules()
 
-    def initialize():
+    def initialize(self, mic):
         # Create config dir if it does not exist yet
         if not os.path.exists(jasperpath.CONFIG_PATH):
             try:
@@ -105,7 +105,7 @@ class Jessy(object):
         tts_engine_class = tts.get_engine_by_slug(tts_engine_slug)
 
         # Initialize Mic
-        self.mic = Mic(tts_engine_class.get_instance(),
+        self.mic = mic(tts_engine_class.get_instance(),
                        stt_passive_engine_class.get_passive_instance(),
                        stt_engine_class.get_active_instance())
         return self

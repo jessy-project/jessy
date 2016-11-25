@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 from jessy.local_mic import Mic
             else:
                 from jessy.mic import Mic
-            jessy.initialize().run()
+            jessy.initialize(Mic).run()
         else:
             def print_mods(namespaces):
                 '''
