@@ -36,3 +36,14 @@ class Singleton(object):
         if not cls.__instance:
             cls.__instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
         return cls.__instance
+
+
+def _module_getter(cls):
+    '''
+    Module getter.
+    '''
+    # For now just that.
+    def initiator():
+        return cls
+
+    return initiator
