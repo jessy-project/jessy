@@ -10,23 +10,36 @@ class Mic:
     prev = None
 
     def __init__(self, speaker, passive_stt_engine, active_stt_engine):
-        return
+        '''
+        Initialize local mic
+        '''
 
-    def passiveListen(self, PERSONA):
-        return True, "JASPER"
+    def passiveListen(self, persona):
+        '''
+        Passive listener.
+        '''
+        return True, persona
 
-    def activeListenToAllOptions(self, THRESHOLD=None, LISTEN=True,
-                                 MUSIC=False):
-        return [self.activeListen(THRESHOLD=THRESHOLD, LISTEN=LISTEN,
-                                  MUSIC=MUSIC)]
+    def activeListenToAllOptions(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
+        '''
+        Active listener (all opts)
+        '''
+        return [self.activeListen(THRESHOLD=THRESHOLD, LISTEN=LISTEN, MUSIC=MUSIC)]
 
     def activeListen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
+        '''
+        Active listener
+        '''
         if not LISTEN:
             return self.prev
 
-        input = raw_input("YOU: ")
+        input = None
+        prompt = 'YOU'
+        while not input:
+            input = raw_input("{0}: ".format(prompt))
+            prompt = '...'
         self.prev = input
-        return input
+        return input.upper()
 
     def say(self, phrase, OPTIONS=None):
-        print("JASPER: %s" % phrase)
+        print ">>>: {0}".format(phrase)
