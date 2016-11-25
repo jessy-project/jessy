@@ -54,8 +54,7 @@ if __name__ == "__main__":
         logger.warning("Network not connected. This may prevent Jessy from running properly.")
 
     if args.diagnose:
-        failed_checks = diagnose.run()
-        sys.exit(0 if not failed_checks else 1)
+        sys.exit(diagnose.run() or 1)
 
     try:
         jessy = Jessy()
