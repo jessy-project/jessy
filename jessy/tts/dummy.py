@@ -11,16 +11,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return True
-
-
-initiator = _module_getter(DummyTTS)
-
-
 class DummyTTS(AbstractTTSEngine):
     """
     Dummy TTS engine that logs phrases with INFO level instead of synthesizing
@@ -39,3 +29,13 @@ class DummyTTS(AbstractTTSEngine):
     def play(self, filename):
         self._logger.debug("Playback of file '%s' requested")
         pass
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
+
+
+initiator = _module_getter(DummyTTS)

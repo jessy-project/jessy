@@ -19,16 +19,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return HAS_PYVONA
-
-
-initiator = _module_getter(EspeakTTS)
-
-
 class EspeakTTS(AbstractTTSEngine):
     """
     Uses the eSpeak speech synthesizer included in the Jasper disk image
@@ -90,3 +80,13 @@ class EspeakTTS(AbstractTTSEngine):
                 self._logger.debug("Output was: '%s'", output)
         self.play(fname)
         os.remove(fname)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
+
+
+initiator = _module_getter(EspeakTTS)

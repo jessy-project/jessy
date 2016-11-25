@@ -171,3 +171,12 @@ class GoogleSTT(AbstractSTTEngine):
     def is_available(cls):
         return diagnose.check_network_connection()
 
+
+def is_valid():
+    '''
+    Module validator.
+    '''
+    return True
+
+
+initiator = _module_getter(GoogleSTT)

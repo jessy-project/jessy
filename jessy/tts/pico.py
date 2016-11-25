@@ -19,16 +19,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return True
-
-
-initiator = _module_getter(PicoTTS)
-
-
 class PicoTTS(AbstractTTSEngine):
     """
     Uses the svox-pico-tts speech synthesizer
@@ -98,3 +88,13 @@ class PicoTTS(AbstractTTSEngine):
                 self._logger.debug("Output was: '%s'", output)
         self.play(fname)
         os.remove(fname)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
+
+
+initiator = _module_getter(PicoTTS)

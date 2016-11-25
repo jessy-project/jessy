@@ -23,16 +23,6 @@ except ImportError:
     HAS_GTTS = False
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return HAS_GTTS
-
-
-initiator = _module_getter(GoogleTTS)
-
-
 class GoogleTTS(AbstractMp3TTSEngine):
     """
     Uses the Google TTS online translator
@@ -87,3 +77,13 @@ class GoogleTTS(AbstractMp3TTSEngine):
         tts.save(tmpfile)
         self.play_mp3(tmpfile)
         os.remove(tmpfile)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return HAS_GTTS
+
+
+initiator = _module_getter(GoogleTTS)

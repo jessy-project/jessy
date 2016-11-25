@@ -102,3 +102,14 @@ class JuliusSTT(AbstractSTTEngine):
     @classmethod
     def is_available(cls):
         return diagnose.check_executable('julius')
+
+
+def is_valid():
+    '''
+    Module validator.
+    '''
+    return True
+
+
+initiator = _module_getter(JuliusSTT)
+

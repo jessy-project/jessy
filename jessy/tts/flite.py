@@ -18,16 +18,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return True
-
-
-initiator = _module_getter(FliteTTS)
-
-
 class FliteTTS(AbstractTTSEngine):
     """
     Uses the flite speech synthesizer
@@ -95,3 +85,12 @@ class FliteTTS(AbstractTTSEngine):
         self.play(fname)
         os.remove(fname)
 
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
+
+
+initiator = _module_getter(FliteTTS)

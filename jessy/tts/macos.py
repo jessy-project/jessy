@@ -17,16 +17,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return True
-
-
-initiator = _module_getter(MacOSXTTS)
-
-
 class MacOSXTTS(AbstractTTSEngine):
     """
     Uses the OS X built-in 'say' command
@@ -62,3 +52,13 @@ class MacOSXTTS(AbstractTTSEngine):
             output = f.read()
             if output:
                 self._logger.debug("Output was: '%s'", output)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
+
+
+initiator = _module_getter(MacOSXTTS)

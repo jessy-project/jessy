@@ -20,17 +20,7 @@ except ImportError:
 from jessy import diagnose
 from jessy import jasperpath
 from jessy.utils import _module_getter
-from jessy.tts import AbstractTTSEngine
-
-
-def is_valid():
-    '''
-    Validator.
-    '''
-    return HAS_PYVONA
-
-
-initiator = _module_getter(IvonaTTS)
+from jessy.tts import AbstractMp3TTSEngine
 
 
 class IvonaTTS(AbstractMp3TTSEngine):
@@ -98,3 +88,13 @@ class IvonaTTS(AbstractMp3TTSEngine):
         self._pyvonavoice.fetch_voice(phrase, tmpfile)
         self.play_mp3(tmpfile)
         os.remove(tmpfile)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return HAS_PYVONA
+
+
+initiator = _module_getter(IvonaTTS)

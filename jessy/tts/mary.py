@@ -20,13 +20,6 @@ from jessy.utils import _module_getter
 from jessy.tts import AbstractTTSEngine
 
 
-def is_valid():
-    '''
-    Validator.
-    '''
-    return True
-
-
 class MaryTTS(AbstractTTSEngine):
     """
     Uses the MARY Text-to-Speech System (MaryTTS)
@@ -120,6 +113,13 @@ class MaryTTS(AbstractTTSEngine):
             tmpfile = f.name
         self.play(tmpfile)
         os.remove(tmpfile)
+
+
+def is_valid():
+    '''
+    Validator.
+    '''
+    return True
 
 
 initiator = _module_getter(MaryTTS)

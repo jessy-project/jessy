@@ -126,3 +126,12 @@ class PocketSphinxSTT(AbstractSTTEngine):
     def is_available(cls):
         return diagnose.check_python_import('pocketsphinx')
 
+
+def is_valid():
+    '''
+    Module validator.
+    '''
+    return True
+
+
+initiator = _module_getter(PocketSphinxSTT)
