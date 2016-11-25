@@ -17,7 +17,15 @@ from jessy import jasperpath
 from jessy import diagnose
 from jessy import vocabcompiler
 from jessy.stt import AbstractSTTEngine
+from jessy.utils import _module_getter
 
+initiator = _module_getter(WitAiSTT)
+
+def is_valid():
+    '''
+    Module validator.
+    '''
+    return True
 
 
 class WitAiSTT(AbstractSTTEngine):
@@ -104,5 +112,3 @@ class WitAiSTT(AbstractSTTEngine):
     @classmethod
     def is_available(cls):
         return diagnose.check_network_connection()
-
-
