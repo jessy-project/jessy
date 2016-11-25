@@ -23,7 +23,7 @@ class DummyTTS(AbstractTTSEngine):
     def is_available(cls):
         return True
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.info(phrase)
 
     def play(self, filename):
