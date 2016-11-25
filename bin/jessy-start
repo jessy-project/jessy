@@ -66,16 +66,20 @@ if __name__ == "__main__":
                 from jessy.mic import Mic
             jessy.initialize().run()
         else:
+            def print_mods(namespaces):
+                '''
+                Print modules
+                '''
+                out = []
+                for num, mod in enumerate(namespaces):
+                    out.append("  {0}. {1}".format(num + 1, mod.split(".")[-1]))
+                return '\n'.join(out)
+
             if args.stt:
-                print "Available STT engines:\n"
-                for mod in jessy.get_stt_modules():
-                    print "  ", mod
-                print
+                print "Available STT engines:\n\n{0}\n".format(print_mods(jessy.get_stt_modules()))
 
             if args.tts:
-                print "Available TTS engines:\n"
-                for mod in jessy.get_tts_modules():
-                    print "  ", mod
+                print "Available TTS engines:\n\n{0}\n".format(print_mods(jessy.get_tts_modules()))
 
     except Exception:
         logger.error("Error occured!", exc_info=True)
