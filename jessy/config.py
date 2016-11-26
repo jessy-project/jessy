@@ -41,6 +41,7 @@ DEFAULT_CONFIG = {
     'phone_number': '',
     'gmail_password': '',
     'prefers_email': False,
+    'timezone': time.strftime('%Z', time.gmtime()),
 
     'stt_engine': 'pocketsphinx',
     'pocketsphinx': {
