@@ -25,9 +25,9 @@ try:
     HAS_CMUCLMTK = True
 except ImportError:
     HAS_CMUCLMTK = False
-    logging.getLogger(__name__).error(
-        "Error importing CMUCLMTK module. "
-        "PocketsphinxVocabulary will not work correctly.", exc_info=True)
+    #logging.getLogger(__name__).error(
+    #    "Error importing CMUCLMTK module. "
+    #    "PocketsphinxVocabulary will not work correctly.", exc_info=True)
 
 
 class AbstractVocabulary(object):
