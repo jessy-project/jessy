@@ -44,7 +44,7 @@ class FliteTTS(AbstractTTSEngine):
         return voices
 
     @classmethod
-    def get_config(cls):
+    def get_config(cls, profile):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # HMM dir
@@ -64,7 +64,7 @@ class FliteTTS(AbstractTTSEngine):
                 diagnose.check_executable('flite') and
                 len(cls.get_voices()) > 0)
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         cmd = ['flite']
         if self.voice:
