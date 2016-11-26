@@ -127,6 +127,8 @@ function setup_ve_libs() {
     pip install -r requirements.txt
     ln -s $(readlink -f "./jessy") "$(dirname $(python -c 'import os;print os.__file__'))/site-packages/jessy"
     cp bin/jessy-start "$VE_PATH/bin/jessy"
+    mkdir -p $VE_PATH/share/jessy/static/
+    cp -rv static/* $VE_PATH/share/jessy/static/
     cd $PWD
     deactivate
 }
