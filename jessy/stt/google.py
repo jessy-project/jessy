@@ -97,17 +97,11 @@ class GoogleSTT(AbstractSTTEngine):
             self._request_url = None
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'keys' in profile and 'GOOGLE_SPEECH' in profile['keys']:
-                    config['api_key'] = profile['keys']['GOOGLE_SPEECH']
+        if 'keys' in profile and 'GOOGLE_SPEECH' in profile['keys']:
+            config['api_key'] = profile['keys']['GOOGLE_SPEECH']
+
         return config
 
     def transcribe(self, fp):
