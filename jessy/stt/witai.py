@@ -22,9 +22,9 @@ class WitAiSTT(AbstractSTTEngine):
     Speech-To-Text implementation which relies on the Wit.ai Speech API.
 
     This implementation requires an Wit.ai Access Token to be present in
-    profile.yml. Please sign up at https://wit.ai and copy your instance
+    profile.conf. Please sign up at https://wit.ai and copy your instance
     token, which can be found under Settings in the Wit console to your
-    profile.yml:
+    profile.conf:
         ...
         stt_engine: witai
         witai-stt:
@@ -42,7 +42,7 @@ class WitAiSTT(AbstractSTTEngine):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # Try to get wit.ai Auth token from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

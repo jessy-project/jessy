@@ -31,21 +31,32 @@ def get_args():
     parser.add_argument('-g', '--diagnose', action='store_true',
                         help='Run diagnose and exit')
     parser.add_argument('-d', '--debug', action='store_true', help='Show debug messages')
-    parser.add_argument('-s', '--stt', action='store_true', help='List speech to text (STT) engines available')
-    parser.add_argument('-t', '--tts', action="store_true", help='List text to speech (TTS) engines available')
-
+    parser.add_argument('-s', '--stt', action='store_true',
+                        help='List speech to text (STT) engines available')
+    parser.add_argument('-t', '--tts', action="store_true",
+                        help='List text to speech (TTS) engines available')
+    parser.add_argument('-c', '--config', action='store_true',
+                        help='Create default configuration')
+    parser.add_argument('-f', '--force-config', action='store_true',
+                        help='Force create default configuration. This will overwrite existing configuration.')
     return parser.parse_args()
 
 
 if __name__ == "__main__":
+    logging.basicConfig()
+    log = logging.getLogger()
+    log.getChild("jessy.stt").setLevel(logging.INFO)
+
     if len(sys.argv) == 1:
         sys.argv.append('-h')
 
     args = get_args()
-
-    logging.basicConfig()
-    log = logging.getLogger()
-    log.getChild("jessy.stt").setLevel(logging.INFO)
+    if args.debug:
+        try:
+            import pudb
+            log.info('*** pudb in use. Insert "pu.db" anywhere in the code.')
+        except ImportError:
+            log.warning('No pudb installed! Use just a Python debugger instead!')
 
     if args.debug:
         log.setLevel(logging.DEBUG)
@@ -65,21 +76,31 @@ if __name__ == "__main__":
                 from jessy.mic import Mic
             jessy.initialize(Mic).run()
         else:
-            def print_mods(namespaces):
-                '''
-                Print modules
-                '''
-                out = []
-                for num, mod in enumerate(namespaces):
-                    out.append("  {0}. {1}".format(num + 1, mod.split(".")[-1]))
-                return '\n'.join(out)
+            if args.config or args.force_config:
+                from jessy import config
+                print "Default configuration has been saved to '{0}'".format(
+                    config.save_config(config.load_config(None), overwrite=args.force_config))
+            else:
+                def print_mods(namespaces):
+                    '''
+                    Print modules
+                    '''
+                    out = []
+                    for num, mod in enumerate(namespaces):
+                        out.append("  {0}. {1}".format(num + 1, mod.split(".")[-1]))
+                    return '\n'.join(out)
 
-            if args.stt:
-                print "Available STT engines:\n\n{0}\n".format(print_mods(jessy.get_stt_modules()))
+                if args.stt:
+                    print "Available STT engines:\n\n{0}\n".format(print_mods(jessy.get_stt_modules()))
 
-            if args.tts:
-                print "Available TTS engines:\n\n{0}\n".format(print_mods(jessy.get_tts_modules()))
+                if args.tts:
+                    print "Available TTS engines:\n\n{0}\n".format(print_mods(jessy.get_tts_modules()))
 
-    except Exception:
-        log.error("Error occured!", exc_info=True)
+    except Exception as ex:
+        if args.debug:
+            import traceback
+            print traceback.format_exc()
+        else:
+            log.error(ex)
+
         sys.exit(1)

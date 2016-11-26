@@ -16,16 +16,18 @@ import shutil
 from abc import ABCMeta, abstractmethod, abstractproperty
 import yaml
 
-import brain
-import jasperpath
+from jessy import brain
+from jessy import jasperpath
 
-from g2p import PhonetisaurusG2P
+from jessy.stt.lib.g2p import PhonetisaurusG2P
 try:
     import cmuclmtk
+    HAS_CMUCLMTK = True
 except ImportError:
-    logging.getLogger(__name__).error("Error importing CMUCLMTK module. " +
-                                      "PocketsphinxVocabulary will not work " +
-                                      "correctly.", exc_info=True)
+    HAS_CMUCLMTK = False
+    #logging.getLogger(__name__).error(
+    #    "Error importing CMUCLMTK module. "
+    #    "PocketsphinxVocabulary will not work correctly.", exc_info=True)
 
 
 class AbstractVocabulary(object):
@@ -137,33 +139,28 @@ class AbstractVocabulary(object):
         """
         revision = self.phrases_to_revision(phrases)
         if not force and self.compiled_revision == revision:
-            self._logger.debug('Compilation not neccessary, compiled ' +
-                               'version matches phrases.')
+            self._logger.debug('Compilation not neccessary, compiled version matches phrases.')
             return revision
 
         if not os.path.exists(self.path):
-            self._logger.debug("Vocabulary dir '%s' does not exist, " +
-                               "creating...", self.path)
+            self._logger.debug("Vocabulary dir '%s' does not exist, creating...", self.path)
             try:
                 os.makedirs(self.path)
             except OSError:
-                self._logger.error("Couldn't create vocabulary dir '%s'",
-                                   self.path, exc_info=True)
+                self._logger.error("Couldn't create vocabulary dir '%s'", self.path)
                 raise
         try:
             with open(self.revision_file, 'w') as f:
                 f.write(revision)
         except (OSError, IOError):
-            self._logger.error("Couldn't write revision file in '%s'",
-                               self.revision_file, exc_info=True)
+            self._logger.error("Couldn't write revision file in '%s'", self.revision_file)
             raise
         else:
             self._logger.info('Starting compilation...')
             try:
                 self._compile_vocabulary(phrases)
             except Exception as e:
-                self._logger.error("Fatal compilation Error occured, " +
-                                   "cleaning up...", exc_info=True)
+                self._logger.error("Fatal compilation Error occured, cleaning up...")
                 try:
                     os.remove(self.revision_file)
                 except OSError:
@@ -282,6 +279,10 @@ class PocketsphinxVocabulary(AbstractVocabulary):
         Returns:
             A list of all unique words this vocabulary contains.
         """
+        words = []
+        if not HAS_CMUCLMTK:
+            return words
+
         with tempfile.NamedTemporaryFile(suffix='.vocab', delete=False) as f:
             vocab_file = f.name
 
@@ -296,7 +297,6 @@ class PocketsphinxVocabulary(AbstractVocabulary):
         # Get words from vocab file
         self._logger.debug("Getting words from vocab file and removing it " +
                            "afterwards...")
-        words = []
         with open(vocab_file, 'r') as f:
             for line in f:
                 line = line.strip()
@@ -421,7 +421,7 @@ class JuliusVocabulary(AbstractVocabulary):
 
         lexicon_file = jasperpath.data('julius-stt', 'VoxForge.tgz')
         lexicon_archive_member = 'VoxForge/VoxForgeDict'
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

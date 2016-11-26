@@ -42,16 +42,13 @@ class Brain(object):
                 loader = finder.find_module(name)
                 mod = loader.load_module(name)
             except:
-                logger.warning("Skipped module '%s' due to an error.", name,
-                               exc_info=True)
+                logger.warning("Skipped module '{0}' due to an error.".format(name))
             else:
                 if hasattr(mod, 'WORDS'):
-                    logger.debug("Found module '%s' with words: %r", name,
-                                 mod.WORDS)
+                    logger.debug("Found module '%s' with words: %r", name, mod.WORDS)
                     modules.append(mod)
                 else:
-                    logger.warning("Skipped module '%s' because it misses " +
-                                   "the WORDS constant.", name)
+                    logger.warning("Skipped module '%s' because it misses the WORDS constant.", name)
         modules.sort(key=lambda mod: mod.PRIORITY if hasattr(mod, 'PRIORITY')
                      else 0, reverse=True)
         return modules
@@ -67,20 +64,14 @@ class Brain(object):
         for module in self.modules:
             for text in texts:
                 if module.isValid(text):
-                    self._logger.debug("'%s' is a valid phrase for module " +
-                                       "'%s'", text, module.__name__)
+                    self._logger.debug("'%s' is a valid phrase for module '%s'", text, module.__name__)
                     try:
                         module.handle(text, self.mic, self.profile)
                     except Exception:
-                        self._logger.error('Failed to execute module',
-                                           exc_info=True)
-                        self.mic.say("I'm sorry. I had some trouble with " +
-                                     "that operation. Please try again later.")
+                        self._logger.error('Failed to execute module')
+                        self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
                     else:
-                        self._logger.debug("Handling of phrase '%s' by " +
-                                           "module '%s' completed", text,
-                                           module.__name__)
+                        self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
                     finally:
                         return
-        self._logger.debug("No module was able to handle any of these " +
-                           "phrases: %r", texts)
+        self._logger.debug("No module was able to handle any of these phrases: %r", texts)

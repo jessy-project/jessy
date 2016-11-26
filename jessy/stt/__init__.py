@@ -2,7 +2,7 @@
 from abc import ABCMeta, abstractmethod
 
 from jessy import jasperpath
-from jessy import vocabcompiler
+from jessy.stt.lib import vocabcompiler
 
 
 class AbstractSTTEngine(object):

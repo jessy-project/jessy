@@ -6,7 +6,7 @@ import yaml
 
 from jessy import jasperpath
 from jessy import diagnose
-from jessy import vocabcompiler
+from jessy.stt.lib import vocabcompiler
 from jessy.stt import AbstractSTTEngine
 from jessy.utils import _module_getter
 
@@ -83,7 +83,7 @@ class PocketSphinxSTT(AbstractSTTEngine):
         config = {}
         # HMM dir
         # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
 
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
