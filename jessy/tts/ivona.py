@@ -47,7 +47,7 @@ class IvonaTTS(AbstractMp3TTSEngine):
             self._pyvonavoice.sentence_break = sentence_break
 
     @classmethod
-    def get_config(cls):
+    def get_config(cls, profile):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # HMM dir
@@ -81,7 +81,7 @@ class IvonaTTS(AbstractMp3TTSEngine):
                 diagnose.check_python_import('pyvona') and
                 diagnose.check_network_connection())
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as f:
             tmpfile = f.name

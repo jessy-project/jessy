@@ -42,7 +42,7 @@ class GoogleTTS(AbstractMp3TTSEngine):
                 diagnose.check_network_connection())
 
     @classmethod
-    def get_config(cls):
+    def get_config(cls, profile):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # HMM dir
@@ -66,7 +66,7 @@ class GoogleTTS(AbstractMp3TTSEngine):
                  'th', 'tr', 'vi', 'cy']
         return langs
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         if self.language not in self.languages:
             raise ValueError("Language '%s' not supported by '%s'",
