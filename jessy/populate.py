@@ -5,7 +5,7 @@ from getpass import getpass
 import yaml
 from pytz import timezone
 import feedparser
-import jasperpath
+import jessypath
 
 
 def run():
@@ -136,9 +136,9 @@ def run():
 
     # write to profile
     print("Writing to profile...")
-    if not os.path.exists(jasperpath.CONFIG_PATH):
-        os.makedirs(jasperpath.CONFIG_PATH)
-    outputFile = open(jasperpath.config("profile.conf"), "w")
+    if not os.path.exists(jessypath.CONFIG_PATH):
+        os.makedirs(jessypath.CONFIG_PATH)
+    outputFile = open(jessypath.config("profile.conf"), "w")
     yaml.dump(profile, outputFile, default_flow_style=False)
     print("Done.")
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8-*-
 from abc import ABCMeta, abstractmethod
 
-from jessy import jasperpath
+from jessy import jessypath
 from jessy.stt.lib import vocabcompiler
 
 
@@ -22,7 +22,7 @@ class AbstractSTTEngine(object):
         config = cls.get_config()
         if cls.VOCABULARY_TYPE:
             vocabulary = cls.VOCABULARY_TYPE(vocabulary_name,
-                                             path=jasperpath.config(
+                                             path=jessypath.config(
                                                  'vocabularies'))
             if not vocabulary.matches_phrases(phrases):
                 vocabulary.compile(phrases)

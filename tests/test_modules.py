@@ -1,6 +1,6 @@
 # -*- coding: utf-8-*-
 import unittest
-from jessy import test_mic, diagnose, jasperpath
+from jessy import test_mic, diagnose, jessypath
 from jessy.modules import Life, Joke, Time, Gmail, HN, News, Weather
 
 DEFAULT_PROFILE = {
@@ -44,7 +44,7 @@ class TestModules(unittest.TestCase):
         inputs = ["Who's there?", "Random response"]
         outputs = self.runConversation(query, inputs, Joke)
         self.assertEqual(len(outputs), 3)
-        allJokes = open(jasperpath.data('text', 'JOKES.txt'), 'r').read()
+        allJokes = open(jessypath.data('text', 'JOKES.txt'), 'r').read()
         self.assertTrue(outputs[2] in allJokes)
 
     def testTime(self):

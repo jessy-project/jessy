@@ -8,7 +8,7 @@ import logging
 import yaml
 
 from jessy import diagnose
-from jessy import jasperpath
+from jessy import jessypath
 
 
 class PhonetisaurusG2P(object):
@@ -68,10 +68,10 @@ class PhonetisaurusG2P(object):
         # FIXME: Replace this as soon as pull request
         # jasperproject/jasper-client#128 has been merged
 
-        conf = {'fst_model': os.path.join(jasperpath.APP_PATH, os.pardir,
+        conf = {'fst_model': os.path.join(jessypath.APP_PATH, os.pardir,
                                           'phonetisaurus', 'g014b2b.fst')}
         # Try to get fst_model from config
-        profile_path = jasperpath.config('profile.conf')
+        profile_path = jessypath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)
