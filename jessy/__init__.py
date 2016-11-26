@@ -45,6 +45,7 @@ class Jessy(object):
         :param mic:
         :return:
         '''
+
         self.config = config.load_config(jessypath.CONFIG_PATH)
 
         stt_engine_class = self._stt[self.config['stt_engine']].initiator()
@@ -56,9 +57,9 @@ class Jessy(object):
         tts_engine_class = self._tts[self.config['tts_engine']].initiator()
 
         # Initialize Mic
-        self.mic = mic(tts_engine_class.get_instance(),
-                       stt_passive_engine_class.get_passive_instance(),
-                       stt_engine_class.get_active_instance())
+        self.mic = mic(tts_engine_class.get_instance(self.config),
+                       stt_passive_engine_class.get_passive_instance(self.config),
+                       stt_engine_class.get_active_instance(self.config))
         return self
 
     def run(self):
