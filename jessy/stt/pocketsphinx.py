@@ -78,20 +78,12 @@ class PocketSphinxSTT(AbstractSTTEngine):
         os.remove(self._logfile)
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                try:
-                    config['hmm_dir'] = profile['pocketsphinx']['hmm_dir']
-                except KeyError:
-                    pass
+        try:
+            config['hmm_dir'] = profile['pocketsphinx']['hmm_dir']
+        except KeyError:
+            pass
 
         return config
 
