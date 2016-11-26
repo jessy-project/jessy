@@ -8,9 +8,9 @@ import yaml
 
 from jessy import jasperpath
 from jessy import diagnose
-from jessy import vocabcompiler
 from jessy.utils import _module_getter
 from jessy.stt import AbstractSTTEngine
+from jessy.stt.lib import vocabcompiler
 
 
 class JuliusSTT(AbstractSTTEngine):

@@ -6,7 +6,7 @@ import yaml
 
 from jessy import jasperpath
 from jessy import diagnose
-from jessy import vocabcompiler
+from jessy.stt.lib import vocabcompiler
 from jessy.stt import AbstractSTTEngine
 from jessy.utils import _module_getter
 
