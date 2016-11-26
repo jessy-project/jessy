@@ -71,7 +71,7 @@ class PhonetisaurusG2P(object):
         conf = {'fst_model': os.path.join(jasperpath.APP_PATH, os.pardir,
                                           'phonetisaurus', 'g014b2b.fst')}
         # Try to get fst_model from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

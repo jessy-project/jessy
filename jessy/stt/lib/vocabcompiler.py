@@ -421,7 +421,7 @@ class JuliusVocabulary(AbstractVocabulary):
 
         lexicon_file = jasperpath.data('julius-stt', 'VoxForge.tgz')
         lexicon_archive_member = 'VoxForge/VoxForgeDict'
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

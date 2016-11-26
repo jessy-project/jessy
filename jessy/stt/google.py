@@ -18,7 +18,7 @@ class GoogleSTT(AbstractSTTEngine):
     """
     Speech-To-Text implementation which relies on the Google Speech API.
 
-    This implementation requires a Google API key to be present in profile.yml
+    This implementation requires a Google API key to be present in profile.conf
 
     To obtain an API key:
     1. Join the Chromium Dev group:
@@ -29,12 +29,12 @@ class GoogleSTT(AbstractSTTEngine):
        the Speech API.
     4. Under "APIs & Auth," navigate to "Credentials." Create a new key for
        public API access.
-    5. Add your credentials to your profile.yml. Add an entry to the 'keys'
+    5. Add your credentials to your profile.conf. Add an entry to the 'keys'
        section using the key name 'GOOGLE_SPEECH.' Sample configuration:
-    6. Set the value of the 'stt_engine' key in your profile.yml to 'google'
+    6. Set the value of the 'stt_engine' key in your profile.conf to 'google'
 
 
-    Excerpt from sample profile.yml:
+    Excerpt from sample profile.conf:
 
         ...
         timezone: US/Pacific
@@ -102,7 +102,7 @@ class GoogleSTT(AbstractSTTEngine):
         config = {}
         # HMM dir
         # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

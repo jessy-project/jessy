@@ -65,7 +65,7 @@ class MaryTTS(AbstractTTSEngine):
         config = {}
         # HMM dir
         # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

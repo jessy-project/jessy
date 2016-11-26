@@ -15,9 +15,9 @@ class AttSTT(AbstractSTTEngine):
     Speech-To-Text implementation which relies on the AT&T Speech API.
 
     This implementation requires an AT&T app_key/app_secret to be present in
-    profile.yml. Please sign up at http://developer.att.com/apis/speech and
+    profile.conf. Please sign up at http://developer.att.com/apis/speech and
     create a new app. You can then take the app_key/app_secret and put it into
-    your profile.yml:
+    your profile.conf:
         ...
         stt_engine: att
         att-stt:
@@ -38,7 +38,7 @@ class AttSTT(AbstractSTTEngine):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # Try to get AT&T app_key/app_secret from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

@@ -28,7 +28,7 @@ class WatsonSTT(AbstractSTTEngine):
        that service there will be a navigation option for "Service Credentials"
        in the left hand nav. Find your username and password there.
 
-    Excerpt from sample profile.yml:
+    Excerpt from sample profile.conf:
 
         ...
         timezone: US/Pacific
@@ -81,7 +81,7 @@ class WatsonSTT(AbstractSTTEngine):
         config = {}
         # HMM dir
         # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.yml')
+        profile_path = jasperpath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)
