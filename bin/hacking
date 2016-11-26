@@ -138,7 +138,8 @@ function setup_all() {
     check_env;
     setup_virtualenv;
     setup_ve_libs;
-    yesno "Install alias?" setup_ve_alias break;
+    echo
+    yesno "Install virtual environment shell alias? (recommended) " setup_ve_alias break;
 }
 
 
