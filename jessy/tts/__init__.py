@@ -53,10 +53,8 @@ class AbstractTTSEngine(object):
         return {}
 
     @classmethod
-    def get_instance(cls):
-        config = cls.get_config()
-        instance = cls(**config)
-        return instance
+    def get_instance(cls, config):
+        return cls(**cls.get_config(config))
 
     @classmethod
     @abstractmethod
