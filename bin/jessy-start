@@ -43,14 +43,20 @@ def get_args():
 
 
 if __name__ == "__main__":
+    logging.basicConfig()
+    log = logging.getLogger()
+    log.getChild("jessy.stt").setLevel(logging.INFO)
+
     if len(sys.argv) == 1:
         sys.argv.append('-h')
 
     args = get_args()
-
-    logging.basicConfig()
-    log = logging.getLogger()
-    log.getChild("jessy.stt").setLevel(logging.INFO)
+    if args.debug:
+        try:
+            import pudb
+            log.info('*** pudb in use. Insert "pu.db" anywhere in the code.')
+        except ImportError:
+            log.warning('No pudb installed! Use just a Python debugger instead!')
 
     if args.debug:
         log.setLevel(logging.DEBUG)
