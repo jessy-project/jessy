@@ -61,23 +61,16 @@ class MaryTTS(AbstractTTSEngine):
 
     @classmethod
     def get_config(cls, profile):
-        # FIXME: Replace this as soon as we have a config module
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'mary-tts' in profile:
-                    if 'server' in profile['mary-tts']:
-                        config['server'] = profile['mary-tts']['server']
-                    if 'port' in profile['mary-tts']:
-                        config['port'] = profile['mary-tts']['port']
-                    if 'language' in profile['mary-tts']:
-                        config['language'] = profile['mary-tts']['language']
-                    if 'voice' in profile['mary-tts']:
-                        config['voice'] = profile['mary-tts']['voice']
+        if 'mary-tts' in profile:
+            if 'server' in profile['mary-tts']:
+                config['server'] = profile['mary-tts']['server']
+            if 'port' in profile['mary-tts']:
+                config['port'] = profile['mary-tts']['port']
+            if 'language' in profile['mary-tts']:
+                config['language'] = profile['mary-tts']['language']
+            if 'voice' in profile['mary-tts']:
+                config['voice'] = profile['mary-tts']['voice']
 
         return config
 
