@@ -76,20 +76,14 @@ class WatsonSTT(AbstractSTTEngine):
         self._password = value
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'watson' in profile:
-                    if 'username' in profile['watson']:
-                        config['username'] = profile['watson']['username']
-                    if 'password' in profile['watson']:
-                        config['password'] = profile['watson']['password']
+        if 'watson' in profile:
+            if 'username' in profile['watson']:
+                config['username'] = profile['watson']['username']
+            if 'password' in profile['watson']:
+                config['password'] = profile['watson']['password']
+
         return config
 
     def transcribe(self, fp):
