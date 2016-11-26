@@ -26,7 +26,7 @@ def config(*fname):
     '''
     Get config path.
     '''
-    return os.path.join(CONFIG_PATH or '', *fname)
+    return CONFIG_PATH
 
 
 def data(*fname):
