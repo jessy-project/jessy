@@ -49,7 +49,7 @@ class AbstractTTSEngine(object):
     __metaclass__ = ABCMeta
 
     @classmethod
-    def get_config(cls):
+    def get_config(cls, profile):
         return {}
 
     @classmethod
