@@ -46,7 +46,7 @@ class FestivalTTS(AbstractTTSEngine):
                     return ('No default voice found' not in output)
         return False
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         cmd = ['text2wave']
         with tempfile.NamedTemporaryFile(suffix='.wav') as out_f:
