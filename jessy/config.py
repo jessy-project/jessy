@@ -71,6 +71,20 @@ def _deep_merge(src, dst):
     return dst
 
 
+def save_config(conf):
+    '''
+    Write config
+
+    :param path:
+    :return:
+    '''
+    path = os.path.join(jasperpath.LOCAL_STORE, jasperpath.CONFIG_FILENAME)
+    if not os.path.exists(jasperpath.LOCAL_STORE):
+        os.makedirs(jasperpath.LOCAL_STORE)
+    yaml.dump(conf, open(path, "w"), default_flow_style=False)
+
+    return path
+
 def load_config(path):
     '''
     Load configuration.
