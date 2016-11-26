@@ -35,8 +35,10 @@ def get_args():
                         help='List speech to text (STT) engines available')
     parser.add_argument('-t', '--tts', action="store_true",
                         help='List text to speech (TTS) engines available')
-    parser.add_argument('--config', action='store_true',
+    parser.add_argument('-c', '--config', action='store_true',
                         help='Create default configuration')
+    parser.add_argument('-f', '--force-config', action='store_true',
+                        help='Force create default configuration. This will overwrite existing configuration.')
     return parser.parse_args()
 
 
@@ -68,10 +70,10 @@ if __name__ == "__main__":
                 from jessy.mic import Mic
             jessy.initialize(Mic).run()
         else:
-            if args.config:
+            if args.config or args.force_config:
                 from jessy import config
                 print "Default configuration has been saved to '{0}'".format(
-                    config.save_config(config.load_config(None)))
+                    config.save_config(config.load_config(None), overwrite=args.force_config))
             else:
                 def print_mods(namespaces):
                     '''

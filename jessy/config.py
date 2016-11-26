@@ -71,7 +71,7 @@ def _deep_merge(src, dst):
     return dst
 
 
-def save_config(conf):
+def save_config(conf, overwrite=False):
     '''
     Write config
 
@@ -79,6 +79,9 @@ def save_config(conf):
     :return:
     '''
     path = os.path.join(jasperpath.LOCAL_STORE, jasperpath.CONFIG_FILENAME)
+    if os.path.exists(path) and not overwrite:
+        raise OSError("Local configuration file already exists at '{0}'!".format(path))
+
     if not os.path.exists(jasperpath.LOCAL_STORE):
         os.makedirs(jasperpath.LOCAL_STORE)
     yaml.dump(conf, open(path, "w"), default_flow_style=False)
