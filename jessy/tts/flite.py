@@ -45,17 +45,10 @@ class FliteTTS(AbstractTTSEngine):
 
     @classmethod
     def get_config(cls, profile):
-        # FIXME: Replace this as soon as we have a config module
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'flite-tts' in profile:
-                    if 'voice' in profile['flite-tts']:
-                        config['voice'] = profile['flite-tts']['voice']
+        if 'flite-tts' in profile and 'voice' in profile['flite-tts']:
+            config['voice'] = profile['flite-tts']['voice']
+
         return config
 
     @classmethod
