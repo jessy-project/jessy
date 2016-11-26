@@ -42,18 +42,10 @@ class GoogleTTS(AbstractMp3TTSEngine):
                 diagnose.check_network_connection())
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if ('google-tts' in profile and
-                   'language' in profile['google-tts']):
-                    config['language'] = profile['google-tts']['language']
+        if ('google-tts' in profile and 'language' in profile['google-tts']):
+            config['language'] = profile['google-tts']['language']
 
         return config
 
@@ -66,7 +58,7 @@ class GoogleTTS(AbstractMp3TTSEngine):
                  'th', 'tr', 'vi', 'cy']
         return langs
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         if self.language not in self.languages:
             raise ValueError("Language '%s' not supported by '%s'",

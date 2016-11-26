@@ -34,19 +34,14 @@ class AttSTT(AbstractSTTEngine):
         self.app_secret = app_secret
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # Try to get AT&T app_key/app_secret from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'att-stt' in profile:
-                    if 'app_key' in profile['att-stt']:
-                        config['app_key'] = profile['att-stt']['app_key']
-                    if 'app_secret' in profile['att-stt']:
-                        config['app_secret'] = profile['att-stt']['app_secret']
+        if 'att-stt' in profile:
+            if 'app_key' in profile['att-stt']:
+                config['app_key'] = profile['att-stt']['app_key']
+            if 'app_secret' in profile['att-stt']:
+                config['app_secret'] = profile['att-stt']['app_secret']
+
         return config
 
     @property

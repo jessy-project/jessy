@@ -30,7 +30,7 @@ class MacOSXTTS(AbstractTTSEngine):
                 diagnose.check_executable('say') and
                 diagnose.check_executable('afplay'))
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         cmd = ['say', str(phrase)]
         self._logger.debug('Executing %s', ' '.join([pipes.quote(arg)

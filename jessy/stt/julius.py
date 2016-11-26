@@ -56,21 +56,14 @@ class JuliusSTT(AbstractSTTEngine):
                     self._logger.debug(line[6:])
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
+        if 'julius' in profile:
+            if 'hmmdefs' in profile['julius']:
+                config['hmmdefs'] = profile['julius']['hmmdefs']
+            if 'tiedlist' in profile['julius']:
+                config['tiedlist'] = profile['julius']['tiedlist']
 
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'julius' in profile:
-                    if 'hmmdefs' in profile['julius']:
-                        config['hmmdefs'] = profile['julius']['hmmdefs']
-                    if 'tiedlist' in profile['julius']:
-                        config['tiedlist'] = profile['julius']['tiedlist']
         return config
 
     def transcribe(self, fp, mode=None):

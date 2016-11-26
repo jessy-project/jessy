@@ -60,24 +60,17 @@ class MaryTTS(AbstractTTSEngine):
         return [line.split()[0] for line in r.text.splitlines()]
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'mary-tts' in profile:
-                    if 'server' in profile['mary-tts']:
-                        config['server'] = profile['mary-tts']['server']
-                    if 'port' in profile['mary-tts']:
-                        config['port'] = profile['mary-tts']['port']
-                    if 'language' in profile['mary-tts']:
-                        config['language'] = profile['mary-tts']['language']
-                    if 'voice' in profile['mary-tts']:
-                        config['voice'] = profile['mary-tts']['voice']
+        if 'mary-tts' in profile:
+            if 'server' in profile['mary-tts']:
+                config['server'] = profile['mary-tts']['server']
+            if 'port' in profile['mary-tts']:
+                config['port'] = profile['mary-tts']['port']
+            if 'language' in profile['mary-tts']:
+                config['language'] = profile['mary-tts']['language']
+            if 'voice' in profile['mary-tts']:
+                config['voice'] = profile['mary-tts']['voice']
 
         return config
 
@@ -91,7 +84,7 @@ class MaryTTS(AbstractTTSEngine):
         urlparts = ('http', self.netloc, path, query_s, '')
         return urlparse.urlunsplit(urlparts)
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         if self.language not in self.languages:
             raise ValueError("Language '%s' not supported by '%s'"

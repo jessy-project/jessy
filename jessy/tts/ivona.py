@@ -47,32 +47,22 @@ class IvonaTTS(AbstractMp3TTSEngine):
             self._pyvonavoice.sentence_break = sentence_break
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'ivona-tts' in profile:
-                    if 'access_key' in profile['ivona-tts']:
-                        config['access_key'] = \
-                            profile['ivona-tts']['access_key']
-                    if 'secret_key' in profile['ivona-tts']:
-                        config['secret_key'] = \
-                            profile['ivona-tts']['secret_key']
-                    if 'region' in profile['ivona-tts']:
-                        config['region'] = profile['ivona-tts']['region']
-                    if 'voice' in profile['ivona-tts']:
-                        config['voice'] = profile['ivona-tts']['voice']
-                    if 'speech_rate' in profile['ivona-tts']:
-                        config['speech_rate'] = \
-                            profile['ivona-tts']['speech_rate']
-                    if 'sentence_break' in profile['ivona-tts']:
-                        config['sentence_break'] = \
-                            profile['ivona-tts']['sentence_break']
+        if 'ivona-tts' in profile:
+            if 'access_key' in profile['ivona-tts']:
+                config['access_key'] = profile['ivona-tts']['access_key']
+            if 'secret_key' in profile['ivona-tts']:
+                config['secret_key'] = profile['ivona-tts']['secret_key']
+            if 'region' in profile['ivona-tts']:
+                config['region'] = profile['ivona-tts']['region']
+            if 'voice' in profile['ivona-tts']:
+                config['voice'] = profile['ivona-tts']['voice']
+            if 'speech_rate' in profile['ivona-tts']:
+                config['speech_rate'] = profile['ivona-tts']['speech_rate']
+            if 'sentence_break' in profile['ivona-tts']:
+                config['sentence_break'] = profile['ivona-tts']['sentence_break']
+
         return config
 
     @classmethod
@@ -81,7 +71,7 @@ class IvonaTTS(AbstractMp3TTSEngine):
                 diagnose.check_python_import('pyvona') and
                 diagnose.check_network_connection())
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as f:
             tmpfile = f.name

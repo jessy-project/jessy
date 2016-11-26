@@ -37,17 +37,10 @@ class PicoTTS(AbstractTTSEngine):
                 diagnose.check_executable('pico2wave'))
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'pico-tts' in profile and 'language' in profile['pico-tts']:
-                    config['language'] = profile['pico-tts']['language']
+        if 'pico-tts' in profile and 'language' in profile['pico-tts']:
+            config['language'] = profile['pico-tts']['language']
 
         return config
 
@@ -68,7 +61,7 @@ class PicoTTS(AbstractTTSEngine):
         langs = matchobj.group(1).split()
         return langs
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
             fname = f.name

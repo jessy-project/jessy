@@ -38,18 +38,11 @@ class WitAiSTT(AbstractSTTEngine):
         self.token = access_token
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # Try to get wit.ai Auth token from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'witai-stt' in profile:
-                    if 'access_token' in profile['witai-stt']:
-                        config['access_token'] = \
-                            profile['witai-stt']['access_token']
+        if 'witai-stt' in profile and 'access_token' in profile['witai-stt']:
+            config['access_token'] = profile['witai-stt']['access_token']
+
         return config
 
     @property
