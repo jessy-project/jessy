@@ -14,7 +14,7 @@ class AbstractSTTEngine(object):
     VOCABULARY_TYPE = None
 
     @classmethod
-    def get_config(cls):
+    def get_config(cls, profile):
         return {}
 
     @classmethod
