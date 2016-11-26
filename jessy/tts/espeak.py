@@ -35,24 +35,17 @@ class EspeakTTS(AbstractTTSEngine):
         self.words_per_minute = words_per_minute
 
     @classmethod
-    def get_config(cls):
-        # FIXME: Replace this as soon as we have a config module
+    def get_config(cls, profile):
         config = {}
-        # HMM dir
-        # Try to get hmm_dir from config
-        profile_path = jessypath.config('profile.conf')
-        if os.path.exists(profile_path):
-            with open(profile_path, 'r') as f:
-                profile = yaml.safe_load(f)
-                if 'espeak-tts' in profile:
-                    if 'voice' in profile['espeak-tts']:
-                        config['voice'] = profile['espeak-tts']['voice']
-                    if 'pitch_adjustment' in profile['espeak-tts']:
-                        config['pitch_adjustment'] = \
-                            profile['espeak-tts']['pitch_adjustment']
-                    if 'words_per_minute' in profile['espeak-tts']:
-                        config['words_per_minute'] = \
-                            profile['espeak-tts']['words_per_minute']
+        if 'espeak-tts' in profile:
+            if 'voice' in profile['espeak-tts']:
+                config['voice'] = profile['espeak-tts']['voice']
+            if 'pitch_adjustment' in profile['espeak-tts']:
+                config['pitch_adjustment'] = \
+                    profile['espeak-tts']['pitch_adjustment']
+            if 'words_per_minute' in profile['espeak-tts']:
+                config['words_per_minute'] = \
+                    profile['espeak-tts']['words_per_minute']
         return config
 
     @classmethod
