@@ -18,8 +18,8 @@ class AbstractSTTEngine(object):
         return {}
 
     @classmethod
-    def get_instance(cls, vocabulary_name, phrases):
-        config = cls.get_config()
+    def get_instance(cls, config, vocabulary_name, phrases):
+        config = cls.get_config(config)
         if cls.VOCABULARY_TYPE:
             vocabulary = cls.VOCABULARY_TYPE(vocabulary_name,
                                              path=jessypath.config(
@@ -31,14 +31,14 @@ class AbstractSTTEngine(object):
         return instance
 
     @classmethod
-    def get_passive_instance(cls):
+    def get_passive_instance(cls, config):
         phrases = vocabcompiler.get_keyword_phrases()
-        return cls.get_instance('keyword', phrases)
+        return cls.get_instance(config, 'keyword', phrases)
 
     @classmethod
-    def get_active_instance(cls):
+    def get_active_instance(cls, config):
         phrases = vocabcompiler.get_all_phrases()
-        return cls.get_instance('default', phrases)
+        return cls.get_instance(config, 'default', phrases)
 
     @classmethod
     @abstractmethod
