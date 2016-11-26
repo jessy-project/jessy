@@ -26,7 +26,11 @@ def config(*fname):
     '''
     Get config path.
     '''
-    return CONFIG_PATH
+    if not CONFIG_PATH:
+        root = LOCAL_STORE
+    else:
+        root = os.path.dirname(CONFIG_PATH)
+    return fname and os.path.join(root, *fname) or CONFIG_PATH
 
 
 def data(*fname):
