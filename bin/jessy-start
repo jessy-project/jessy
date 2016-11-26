@@ -80,6 +80,6 @@ if __name__ == "__main__":
             if args.tts:
                 print "Available TTS engines:\n\n{0}\n".format(print_mods(jessy.get_tts_modules()))
 
-    except Exception:
-        log.error("Error occured!", exc_info=True)
+    except Exception as ex:
+        log.error(ex)
         sys.exit(1)
