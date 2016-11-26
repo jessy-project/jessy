@@ -53,7 +53,7 @@ class EspeakTTS(AbstractTTSEngine):
         return (super(cls, cls).is_available() and
                 diagnose.check_executable('espeak'))
 
-    def say(self, phrase):
+    def say(self, phrase, *args):
         self._logger.debug("Saying '%s' with '%s'", phrase, self.SLUG)
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as f:
             fname = f.name
