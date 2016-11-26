@@ -1,0 +1,168 @@
+#!/bin/bash
+#
+#
+# The MIT License (MIT)
+#
+# Copyright (c) 2016 Bogdan Maryniuk <bo@suse.de>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+VE_PATH=""
+SRC_PATH=""
+BASHRC="$(readlink -f ~)/.bashrc"
+
+#
+# Util: displays an error and exits
+#
+function scream() {
+    echo "Error: $1"
+    exit 1;
+}
+
+
+#
+# Util: Say bye and quit
+#
+function bye() {
+    echo "Bye! :-)"
+    exit 0;
+}
+
+
+#
+# Util: get user input
+#
+function yesno() {
+    QUESTION=$1
+    Y_FUNC=$2
+    N_FUNC=$3
+    while true; do
+	read -p "$QUESTION [y/n]: " yn
+	case $yn in
+	    [Yy]* ) $Y_FUNC; break;;
+	    [Nn]* ) $N_FUNC;;
+	    * ) echo "Please answer yes or no.";;
+	esac
+    done
+}
+
+
+#
+# Check environment
+#
+function check_env() {
+    for exbin in "virtualenv"; do
+	if [ -z $(which $exbin) ]; then
+	    scream "no $exbin has been found";
+	fi
+    done
+    if [ -f $BASHRC ]; then
+	if [[ ! -z $(cat $BASHRC | grep ve_jessy) ]]; then
+	    echo -e "\nError:\n  There is an alias installed 've_jessy'\n  in your $BASHRC file. Please remove it,"
+	    echo -e "  Then run $0 again.\n"
+	    exit;
+	fi
+    fi
+}
+
+
+#
+# Install ve alias
+#
+function setup_ve_alias() {
+    if [ ! -f $BASHRC ]; then
+	touch $BASHRC
+    fi
+    echo "alias ve_jessy=\"source $VE_PATH/bin/activate; cd $SRC_PATH\"" >> $BASHRC
+    echo "----------------------------------------------------------"
+    echo "IMPORTANT: First reload your current shell (logoff/login)."
+    echo "           Then, to get into your environment, run:       "
+    echo
+    echo "           $ ve_jessy <ENTER>"
+    echo
+}
+
+#
+# Install virtualenv
+#
+function setup_virtualenv() {
+    while true; do
+	read -p "Path to your virtualenv: " pth
+	if [ -d $pth ]; then
+	    scream "Path '$pth' exist already!"
+	else
+	    virtualenv --system-site-packages $pth
+	    VE_PATH=$pth
+	    break;
+	fi
+    done
+    echo "Virtual environment installation done"
+}
+
+
+#
+# Update pip
+#
+function setup_ve_libs() {
+    source "$VE_PATH/bin/activate";
+    pip install --upgrade pip
+    PWD=$(pwd)
+    cd $(dirname $(pwd -P))
+    pip install -r requirements.txt
+    ln -s $(readlink -f "./jessy") "$(dirname $(python -c 'import os;print os.__file__'))/site-packages/jessy"
+    cp bin/jessy-start "$VE_PATH/bin/jessy"
+    cd $PWD
+    deactivate
+}
+
+#
+# Main installation enclosure
+#
+function setup_all() {
+    check_env;
+    setup_virtualenv;
+    setup_ve_libs;
+    yesno "Install alias?" setup_ve_alias break;
+}
+
+
+function main() {
+    echo "+-------------------------------------+"
+    echo "|           Jessy Hacking             |"
+    echo "|                                     |"
+    echo "|    Setup a virtual environment,     |"
+    echo "| add dependencies and install Jessy. |"
+    echo "+-------------------------------------+"
+    echo
+    yesno "Proceed?" setup_all bye
+}
+
+
+#
+# Main
+#
+if [ "$0" != "./hacking" ]; then
+    cd $(dirname $0)
+fi
+SRC_PATH=$(dirname $(pwd));
+main;
+
+echo
+echo "Have a lot of fun hacking Jessy. :)"
+echo
