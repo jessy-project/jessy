@@ -16,16 +16,18 @@ import shutil
 from abc import ABCMeta, abstractmethod, abstractproperty
 import yaml
 
-import brain
-import jasperpath
+from jessy import brain
+from jessy import jasperpath
 
-from g2p import PhonetisaurusG2P
+from jessy.stt.lib.g2p import PhonetisaurusG2P
 try:
     import cmuclmtk
+    HAS_CMUCLMTK = True
 except ImportError:
-    logging.getLogger(__name__).error("Error importing CMUCLMTK module. " +
-                                      "PocketsphinxVocabulary will not work " +
-                                      "correctly.", exc_info=True)
+    HAS_CMUCLMTK = False
+    logging.getLogger(__name__).error(
+        "Error importing CMUCLMTK module. "
+        "PocketsphinxVocabulary will not work correctly.", exc_info=True)
 
 
 class AbstractVocabulary(object):
@@ -282,6 +284,10 @@ class PocketsphinxVocabulary(AbstractVocabulary):
         Returns:
             A list of all unique words this vocabulary contains.
         """
+        words = []
+        if not HAS_CMUCLMTK:
+            return words
+
         with tempfile.NamedTemporaryFile(suffix='.vocab', delete=False) as f:
             vocab_file = f.name
 
@@ -296,7 +302,6 @@ class PocketsphinxVocabulary(AbstractVocabulary):
         # Get words from vocab file
         self._logger.debug("Getting words from vocab file and removing it " +
                            "afterwards...")
-        words = []
         with open(vocab_file, 'r') as f:
             for line in f:
                 line = line.strip()
