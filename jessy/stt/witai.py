@@ -4,7 +4,7 @@ import logging
 import requests
 import yaml
 
-from jessy import jasperpath
+from jessy import jessypath
 from jessy import diagnose
 from jessy.stt import AbstractSTTEngine
 from jessy.utils import _module_getter
@@ -42,7 +42,7 @@ class WitAiSTT(AbstractSTTEngine):
         # FIXME: Replace this as soon as we have a config module
         config = {}
         # Try to get wit.ai Auth token from config
-        profile_path = jasperpath.config('profile.conf')
+        profile_path = jessypath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

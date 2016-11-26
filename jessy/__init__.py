@@ -8,7 +8,7 @@ import logging
 
 from jessy import tts
 from jessy import stt
-from jessy import jasperpath
+from jessy import jessypath
 from jessy import diagnose
 from jessy.conversation import Conversation
 from jessy.lazyload import LazyLoad
@@ -45,7 +45,7 @@ class Jessy(object):
         :param mic:
         :return:
         '''
-        self.config = config.load_config(jasperpath.CONFIG_PATH)
+        self.config = config.load_config(jessypath.CONFIG_PATH)
 
         stt_engine_class = self._stt[self.config['stt_engine']].initiator()
         if 'stt_passive_engine' in self.config:

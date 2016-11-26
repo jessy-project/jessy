@@ -39,7 +39,7 @@ except ImportError:
     pass
 
 from jessy import diagnose
-from jessy import jasperpath
+from jessy import jessypath
 
 
 class AbstractTTSEngine(object):

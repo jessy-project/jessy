@@ -1,7 +1,7 @@
 # -*- coding: utf-8-*-
 import unittest
 import imp
-from jessy import stt, jasperpath
+from jessy import stt, jessypath
 
 
 def cmuclmtk_installed():
@@ -27,8 +27,8 @@ def pocketsphinx_installed():
 class TestSTT(unittest.TestCase):
 
     def setUp(self):
-        self.jasper_clip = jasperpath.data('audio', 'jasper.wav')
-        self.time_clip = jasperpath.data('audio', 'time.wav')
+        self.jasper_clip = jessypath.data('audio', 'jasper.wav')
+        self.time_clip = jessypath.data('audio', 'time.wav')
 
         self.passive_stt_engine = stt.PocketSphinxSTT.get_passive_instance()
         self.active_stt_engine = stt.PocketSphinxSTT.get_active_instance()

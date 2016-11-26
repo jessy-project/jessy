@@ -18,7 +18,7 @@ except ImportError:
     HAS_PYVONA = False
 
 from jessy import diagnose
-from jessy import jasperpath
+from jessy import jessypath
 from jessy.utils import _module_getter
 from jessy.tts import AbstractMp3TTSEngine
 
@@ -52,7 +52,7 @@ class IvonaTTS(AbstractMp3TTSEngine):
         config = {}
         # HMM dir
         # Try to get hmm_dir from config
-        profile_path = jasperpath.config('profile.conf')
+        profile_path = jessypath.config('profile.conf')
         if os.path.exists(profile_path):
             with open(profile_path, 'r') as f:
                 profile = yaml.safe_load(f)

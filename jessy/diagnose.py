@@ -7,7 +7,7 @@ import subprocess
 import pkgutil
 import logging
 import pip.req
-import jasperpath
+import jessypath
 if sys.version_info < (3, 3):
     from distutils.spawn import find_executable
 else:
@@ -89,7 +89,7 @@ def check_python_import(package_or_module):
     return found
 
 
-def get_pip_requirements(fname=os.path.join(jasperpath.LIB_PATH,
+def get_pip_requirements(fname=os.path.join(jessypath.LIB_PATH,
                                             'requirements.txt')):
     """
     Gets the PIP requirements from a text file. If the files does not exists
@@ -168,7 +168,7 @@ def run():
         else:
             logger.debug("PIP package '%s' found", req.name)
 
-    for fname in [os.path.join(jasperpath.APP_PATH, os.pardir, "phonetisaurus",
+    for fname in [os.path.join(jessypath.APP_PATH, os.pardir, "phonetisaurus",
                                "g014b2b.fst")]:
         logger.debug("Checking file '%s'...", fname)
         if not os.access(fname, os.R_OK):
