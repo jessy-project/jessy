@@ -124,7 +124,7 @@ def _handle(mic, profile):
 
 class GNews(JessyModule):
     '''
-    Handle GMail
+    Handle GNews
     '''
     def __init__(self, config, mic):
         JessyModule.__init__(self, config, mic)
@@ -132,6 +132,7 @@ class GNews(JessyModule):
     def handle(self, transcription):
         if self.matches(transcription):
             _handle(self._mic, self._config)
+            return True
 
     @classmethod
     def keywords(cls):
