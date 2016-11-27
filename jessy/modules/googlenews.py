@@ -3,6 +3,7 @@ import feedparser
 from jessy import app_utils
 import re
 from semantic.numbers import NumberService
+from jessy.modules import JessyModule
 
 WORDS = ["NEWS", "YES", "NO", "FIRST", "SECOND", "THIRD"]
 
@@ -32,7 +33,7 @@ def getTopArticles(maxResults=None):
     return articles
 
 
-def handle(text, mic, profile):
+def _handle(mic, profile):
     """
         Responds to user-input, typically speech text, with a summary of
         the day's top news headlines, sending them to the user over email
@@ -121,11 +122,21 @@ def handle(text, mic, profile):
             "Here are the current top headlines. " + all_titles)
 
 
-def isValid(text):
-    """
-        Returns True if the input is related to the news.
+class GNews(JessyModule):
+    '''
+    Handle GMail
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\b(news|headline)\b', text, re.IGNORECASE))
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic, self._config)
+
+    @classmethod
+    def keywords(cls):
+        return ['headline']
+
+
+load = GNews.load
+reference = GNews.reference
