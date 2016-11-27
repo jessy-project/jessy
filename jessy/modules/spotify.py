@@ -405,6 +405,7 @@ class Spotify(JessyModule):
     def handle(self, transcription):
         if self.matches(transcription):
             _handle(self._mic, self._config)
+            return True
 
     @classmethod
     def keywords(cls):
