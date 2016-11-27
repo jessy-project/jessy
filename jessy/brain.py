@@ -71,6 +71,4 @@ class Brain(object):
                     self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
                 else:
                     self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
-                finally:
-                    return
         self._logger.debug("No module was able to handle any of these phrases: %r", texts)
