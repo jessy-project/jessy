@@ -1,7 +1,8 @@
 # -*- coding: utf-8-*-
 import logging
 import pkgutil
-import jessypath
+from jessy import jessypath
+from jessy.modules import is_valid_module
 
 
 class Brain(object):
@@ -39,18 +40,17 @@ class Brain(object):
         modules = []
         for finder, name, ispkg in pkgutil.walk_packages(locations):
             try:
-                loader = finder.find_module(name)
-                mod = loader.load_module(name)
-            except:
-                logger.warning("Skipped module '{0}' due to an error.".format(name))
+                mod = finder.find_module(name).load_module(name)
+            except Exception as ex:
+                logger.warning("Skipped module '{0}' due to an error: '{1}'".format(name, ex))
             else:
-                if hasattr(mod, 'WORDS'):
-                    logger.debug("Found module '%s' with words: %r", name, mod.WORDS)
+                if is_valid_module(mod):
+                    logger.debug("Loading module '{0}'".format(name))
                     modules.append(mod)
                 else:
-                    logger.warning("Skipped module '%s' because it misses the WORDS constant.", name)
-        modules.sort(key=lambda mod: mod.PRIORITY if hasattr(mod, 'PRIORITY')
-                     else 0, reverse=True)
+                    logger.warning("Module '{0}' is invalid".format(name))
+
+        modules.sort(key=lambda module: module.reference().PRIORITY, reverse=True)
         return modules
 
     def query(self, texts):
@@ -63,15 +63,12 @@ class Brain(object):
         """
         for module in self.modules:
             for text in texts:
-                if module.isValid(text):
-                    self._logger.debug("'%s' is a valid phrase for module '%s'", text, module.__name__)
-                    try:
-                        module.handle(text, self.mic, self.profile)
-                    except Exception:
-                        self._logger.error('Failed to execute module')
-                        self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
-                    else:
-                        self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
-                    finally:
+                try:
+                    if module.load(self.profile, self.mic).handle(text):
                         return
+                except Exception as ex:
+                    self._logger.error('Failed to execute module: {0}'.format(ex))
+                    self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
+                else:
+                    self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
         self._logger.debug("No module was able to handle any of these phrases: %r", texts)

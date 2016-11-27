@@ -1,6 +1,5 @@
 # -*- coding: utf-8-*-
 import logging
-from notifier import Notifier
 from brain import Brain
 
 
@@ -12,7 +11,6 @@ class Conversation(object):
         self.mic = mic
         self.profile = profile
         self.brain = Brain(mic, profile)
-        self.notifier = Notifier(profile)
 
     def handleForever(self):
         """
@@ -21,11 +19,6 @@ class Conversation(object):
         self._logger.info("Starting to handle conversation with keyword '%s'.",
                           self.persona)
         while True:
-            # Print notifications until empty
-            notifications = self.notifier.getAllNotifications()
-            for notif in notifications:
-                self._logger.info("Received notification: '%s'", str(notif))
-
             self._logger.debug("Started listening for keyword '%s'", self.persona)
             threshold, transcribed = self.mic.passiveListen(self.persona)
             self._logger.debug("Stopped listening for keyword '%s'", self.persona)
