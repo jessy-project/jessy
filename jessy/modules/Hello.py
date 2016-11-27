@@ -1,11 +1,9 @@
 # -*- coding: utf-8-*-
 import random
-import re
-
-WORDS = ["WHY", "HOW"]
+from jessy.modules import JessyModule
 
 
-def handle(text, mic, profile):
+def _handle(mic):
     """
         Responds to user-input, typically speech text, by relaying the
         meaning of life.
@@ -24,11 +22,21 @@ def handle(text, mic, profile):
     mic.say(message)
 
 
-def isValid(text):
-    """
-        Returns True if the input is related to the meaning of life.
+class HelloJessy(JessyModule):
+    '''
+    Hello, Jessy!
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\bhello\b', text, re.IGNORECASE))
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic)
+
+    @staticmethod
+    def keywords():
+        return ['hello']
+
+
+load = HelloJessy.load
+reference = HelloJessy.reference
