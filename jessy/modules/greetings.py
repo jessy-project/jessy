@@ -18,7 +18,6 @@ def _handle(mic):
                 "Oh yeah. Hi there",
                 "Hello to you too. But piss off. Please"]
     message = random.choice(messages)
-
     mic.say(message)
 
 
@@ -32,6 +31,7 @@ class HelloJessy(JessyModule):
     def handle(self, transcription):
         if self.matches(transcription):
             _handle(self._mic)
+            return True
 
     @classmethod
     def keywords(cls):
