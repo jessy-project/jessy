@@ -1,13 +1,10 @@
 # -*- coding: utf-8-*-
 from sys import maxint
 import random
-
-WORDS = []
-
-PRIORITY = -(maxint + 1)
+from jessy.modules import JessyModule
 
 
-def handle(text, mic, profile):
+def _handle(mic):
     """
         Reports that the user has unclear or unusable input.
 
@@ -19,16 +16,36 @@ def handle(text, mic, profile):
     """
 
     messages = [
-        "I'm sorry, could you repeat that?",
-        "My apologies, could you try saying that again?",
-        "Say that again?",
-        "I beg your pardon?"
+        'I dit not understand',
+        'I am probably deaf. Please repeat that.',
+        'Oh but slowly, please. I am recording.',
+        'Sorry. I missed that, because I am not a human.',
+        'I am still a machine, not a human. Please say that again.',
+        'Pardon?',
+        'Uhm. I did not get that.',
+        'Excuse me, what did you just said?',
     ]
 
-    message = random.choice(messages)
-
-    mic.say(message)
+    mic.say(random.choice(messages))
 
 
-def isValid(text):
-    return True
+class _NoIdea(JessyModule):
+    '''
+    Handle GMail
+    '''
+    PRIORITY = -(maxint + 1)
+
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
+
+    def handle(self, transcription):
+        _handle(self._mic)
+        return True
+
+    @classmethod
+    def keywords(cls):
+        return []
+
+
+load = _NoIdea.load
+reference = _NoIdea.reference
