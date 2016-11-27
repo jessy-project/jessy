@@ -1,14 +1,11 @@
 # -*- coding: utf-8-*-
 import urllib2
-import re
 import random
 from bs4 import BeautifulSoup
-from jessy import app_utils
 from semantic.numbers import NumberService
+from jessy import app_utils
+from jessy.modules import JessyModule
 
-WORDS = ["HACKER", "NEWS", "YES", "NO", "FIRST", "SECOND", "THIRD"]
-
-PRIORITY = 4
 
 URL = 'http://news.ycombinator.com'
 
@@ -42,7 +39,7 @@ def getTopStories(maxResults=None):
     return matches
 
 
-def handle(text, mic, profile):
+def _handle(mic, profile):
     """
         Responds to user-input, typically speech text, with a sample of
         Hacker News's top headlines, sending them to the user over email
@@ -126,14 +123,26 @@ def handle(text, mic, profile):
         handleResponse(mic.activeListen())
 
     else:
-        mic.say("Here are some front-page articles. " + all_titles)
+        mic.say("Here are some front-page articles. {0}".format(all_titles.encode('utf-8')))
 
 
-def isValid(text):
-    """
-        Returns True if the input is related to Hacker News.
+class HackerNews(JessyModule):
+    '''
+    Handle GMail
+    '''
+    PRIORITY = 4
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\b(hack(er)?|HN)\b', text, re.IGNORECASE))
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
+
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic, self._config)
+
+    @classmethod
+    def keywords(cls):
+        return ['hacker', 'news']
+
+
+load = HackerNews.load
+reference = HackerNews.reference
