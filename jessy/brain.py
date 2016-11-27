@@ -66,8 +66,7 @@ class Brain(object):
                 try:
                     module.load(self.profile, self.mic).handle(text)
                 except Exception as ex:
-                    print ex
-                    self._logger.error('Failed to execute module')
+                    self._logger.error('Failed to execute module: {0}'.format(ex))
                     self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
                 else:
                     self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
