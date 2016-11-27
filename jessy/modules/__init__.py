@@ -48,6 +48,21 @@ def lowercase(func):
 
     return caller
 
+
+def is_valid_module(mod):
+    '''
+    Check if module is valid.
+
+    :param mod:
+    :return:
+    '''
+    for ref in ['reference', 'load']:
+        if not hasattr(mod, ref):
+            return False
+
+    return True
+
+
 class JessyModule(object):
     '''
     Interface to a Jessy module.
