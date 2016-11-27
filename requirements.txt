@@ -27,3 +27,6 @@ python-mpd==0.3.0
 
 # Graphical (console) Python debugger
 pudb
+
+#Alsa Mixer and bindings
+pyalsaaudio>=0.8.2
