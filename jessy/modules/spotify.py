@@ -3,13 +3,10 @@ import re
 import logging
 import difflib
 import mpd
-from jessy.mic import Mic
-
-# Standard module stuff
-WORDS = ["MUSIC", "SPOTIFY"]
+from jessy.modules import JessyModule
 
 
-def handle(text, mic, profile):
+def _handle(mic, profile):
     """
     Responds to user-input, typically speech text, by telling a joke.
 
@@ -31,33 +28,17 @@ def handle(text, mic, profile):
     logger.debug("Preparing to start music module")
     try:
         mpdwrapper = MPDWrapper(**kwargs)
-    except:
+    except Exception:
         logger.error("Couldn't connect to MPD server", exc_info=True)
         mic.say("I'm sorry. It seems that Spotify is not enabled. Please " +
                 "read the documentation to learn how to configure Spotify.")
-        return
+    else:
+        mic.say("Please give me a moment, I'm loading your Spotify playlists.")
 
-    mic.say("Please give me a moment, I'm loading your Spotify playlists.")
-
-    # FIXME: Make this configurable
-    persona = 'JASPER'
-
-    logger.debug("Starting music mode")
-    music_mode = MusicMode(persona, mic, mpdwrapper)
-    music_mode.handleForever()
-    logger.debug("Exiting music mode")
-
-    return
-
-
-def isValid(text):
-    """
-        Returns True if the input is related to jokes/humor.
-
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return any(word in text.upper() for word in WORDS)
+        logger.debug("Starting music mode")
+        music_mode = MusicMode(profile.get('persona', 'JESSY'), mic, mpdwrapper)
+        music_mode.handleForever()
+        logger.debug("Exiting music mode")
 
 
 # The interesting part
@@ -77,9 +58,10 @@ class MusicMode(object):
 
         music_stt_engine = mic.active_stt_engine.get_instance('music', phrases)
 
-        self.mic = Mic(mic.speaker,
-                       mic.passive_stt_engine,
-                       music_stt_engine)
+        # Create the same type of mic (local or real)
+        self.mic = mic.__class__(mic.speaker,
+                                 mic.passive_stt_engine,
+                                 music_stt_engine)
 
     def delegateInput(self, input):
 
@@ -411,3 +393,23 @@ class MPDWrapper(object):
         lookup = {n.upper(): n for n in self.playlists}
         results = [lookup[r] for r in difflib.get_close_matches(query, lookup)]
         return results
+
+
+class Spotify(JessyModule):
+    '''
+    Handle Spotify
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
+
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic, self._config)
+
+    @classmethod
+    def keywords(cls):
+        return ['spotify']
+
+
+load = Spotify.load
+reference = Spotify.reference
