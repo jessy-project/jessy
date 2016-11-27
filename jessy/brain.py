@@ -64,7 +64,8 @@ class Brain(object):
         for module in self.modules:
             for text in texts:
                 try:
-                    module.load(self.profile, self.mic).handle(text)
+                    if module.load(self.profile, self.mic).handle(text):
+                        return
                 except Exception as ex:
                     self._logger.error('Failed to execute module: {0}'.format(ex))
                     self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
