@@ -79,10 +79,10 @@ class JessyModule(object):
     def handle(cls, transcription):
         pass
 
-    @staticmethod
+    @classmethod
     @abstractmethod
     @lowercase
-    def keywords():
+    def keywords(cls):
         return []
 
     def matches(self, text):
