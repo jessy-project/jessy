@@ -3,8 +3,7 @@ import imaplib
 import email
 import re
 from dateutil import parser
-
-WORDS = ["EMAIL", "INBOX"]
+from jessy.modules import JessyModule
 
 
 def getSender(email):
@@ -84,7 +83,7 @@ def fetchUnreadEmails(profile, since=None, markRead=False, limit=None):
     return msgs
 
 
-def handle(text, mic, profile):
+def _handle(mic, profile):
     """
         Responds to user-input, typically speech text, with a summary of
         the user's Gmail inbox, reporting on the number of unread emails
@@ -128,11 +127,21 @@ def handle(text, mic, profile):
         mic.say(response)
 
 
-def isValid(text):
-    """
-        Returns True if the input is related to email.
+class GMail(JessyModule):
+    '''
+    Handle GMail
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\bemail\b', text, re.IGNORECASE))
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic, self._config)
+
+    @classmethod
+    def keywords(cls):
+        return ['email', 'inbox']
+
+
+load = GMail.load
+reference = GMail.reference
