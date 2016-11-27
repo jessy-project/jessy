@@ -33,8 +33,8 @@ class HelloJessy(JessyModule):
         if self.matches(transcription):
             _handle(self._mic)
 
-    @staticmethod
-    def keywords():
+    @classmethod
+    def keywords(cls):
         return ['hello']
 
 
