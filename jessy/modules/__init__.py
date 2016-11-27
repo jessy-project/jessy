@@ -29,6 +29,25 @@ Abstract module interface
 from abc import ABCMeta, abstractmethod
 
 
+def lowercase(func):
+    '''
+    Convert output to uppercase
+
+    :param func:
+    :return:
+    '''
+    def caller(*args, **kwargs):
+        '''
+        Internal function caller
+
+        :param args:
+        :param kwargs:
+        :return:
+        '''
+        return [word.lower() for word in func(*args, **kwargs)]
+
+    return caller
+
 class JessyModule(object):
     '''
     Interface to a Jessy module.
