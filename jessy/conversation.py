@@ -15,7 +15,7 @@ class Conversation(object):
         self.profile = profile
         self.brain = Brain(mic, profile)
 
-    def handleForever(self):
+    def handle_forever(self):
         """
         Delegates user input to the handling function when activated.
         """
