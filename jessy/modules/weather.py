@@ -8,8 +8,7 @@ import requests
 import bs4
 from jessy.app_utils import getTimezone
 from semantic.dates import DateService
-
-WORDS = ["WEATHER", "TODAY", "TOMORROW"]
+from jessy.modules import JessyModule
 
 
 def replaceAcronyms(text):
@@ -91,7 +90,7 @@ def get_forecast_by_wmo_id(wmo_id):
                             % wmo_id)['entries']
 
 
-def handle(text, mic, profile):
+def _handle(text, mic, profile):
     """
     Responds to user-input, typically speech text, with a summary of
     the relevant weather for the requested date (typically, weather
@@ -160,13 +159,23 @@ def handle(text, mic, profile):
         mic.say(
             "I'm sorry. I can't see that far ahead.")
 
+class TimeAlarm(JessyModule):
+    '''
+    Hello, Jessy!
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
 
-def isValid(text):
-    """
-        Returns True if the text is related to the weather.
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(transcription, self._mic, self._config)
+            return True
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\b(weathers?|temperature|forecast|outside|hot|' +
-                          r'cold|jacket|coat|rain)\b', text, re.IGNORECASE))
+    @classmethod
+    def keywords(cls):
+        return ['cold', 'weather', 'weathers', 'temperature',
+                'forecast', 'outside', 'hot', 'jacket', 'coat', 'rain']
+
+
+load = TimeAlarm.load
+reference = TimeAlarm.reference
