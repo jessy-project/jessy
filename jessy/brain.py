@@ -95,6 +95,7 @@ class Brain(object):
         self.profile = profile
         self.modules = self.get_modules()
         self._logger = logging.getLogger(__name__)
+        self.process_registry = SubProcessRegistry()
 
     @classmethod
     def get_modules(cls):
@@ -135,7 +136,9 @@ class Brain(object):
         for module in self.modules:
             for text in texts:
                 try:
-                    if module.plugin.load(self.profile, self.mic).handle(text):
+                    if module.plugin.load(config=self.profile,
+                                          mic=self.mic,
+                                          registry=self.process_registry).handle(text):
                         return
                 except Exception as ex:
                     self._logger.error('Failed to execute module: {0}'.format(ex))
