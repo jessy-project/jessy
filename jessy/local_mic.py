@@ -2,11 +2,15 @@
 """
 A drop-in replacement for the Mic class that allows for all I/O to occur
 over the terminal. Useful for debugging. Unlike with the typical Mic
-implementation, Jasper is always active listening with local_mic.
+implementation, Jessy is always active listening with local_mic.
 """
 
 
 class Mic(object):
+    '''
+    Local mic implementation.
+    '''
+
     prev = None
 
     def __init__(self, speaker, passive_stt_engine, active_stt_engine):
