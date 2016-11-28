@@ -32,7 +32,6 @@ class MPlayerWrapper(JessyModule):
     '''
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
-        self._process_registry.group = self._process_registry.Groups.MUSIC
         self._process_registry.add_process(self._process_registry.Groups.MUSIC,
                                            'mplayer', MPlayer())
 
