@@ -115,7 +115,7 @@ def _handle(mic, profile):
         mic.say("Here are the current top headlines. " + all_titles +
                 ". Would you like me to send you these articles? " +
                 "If so, which?")
-        handleResponse(mic.activeListen())
+        handleResponse(mic.active_listen())
 
     else:
         mic.say(

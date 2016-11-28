@@ -23,7 +23,7 @@ class Conversation(object):
                           self.persona)
         while True:
             self._logger.debug("Started listening for keyword '%s'", self.persona)
-            threshold, transcribed = self.mic.passiveListen(self.persona)
+            threshold, transcribed = self.mic.passive_listen(self.persona)
             self._logger.debug("Stopped listening for keyword '%s'", self.persona)
 
             if not transcribed or not threshold:
@@ -32,7 +32,7 @@ class Conversation(object):
 
             self._logger.info("Keyword '%s' has been said!", self.persona)
             self._logger.debug("Started to listen actively with threshold: %r", threshold)
-            input = self.mic.activeListenToAllOptions(threshold)
+            input = self.mic.active_listen_to_all_options(threshold)
             self._logger.debug("Stopped to listen actively with threshold: %r", threshold)
 
             if input:

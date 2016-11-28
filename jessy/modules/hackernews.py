@@ -120,7 +120,7 @@ def _handle(mic, profile):
         mic.say("Here are some front-page articles. " +
                 all_titles + ". Would you like me to send you these? " +
                 "If so, which?")
-        handleResponse(mic.activeListen())
+        handleResponse(mic.active_listen())
 
     else:
         mic.say("Here are some front-page articles. {0}".format(all_titles.encode('utf-8')))

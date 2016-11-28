@@ -143,7 +143,7 @@ class MusicMode(object):
 
         while True:
 
-            threshold, transcribed = self.mic.passiveListen(self.persona)
+            threshold, transcribed = self.mic.passive_listen(self.persona)
 
             if not transcribed or not threshold:
                 self._logger.info("Nothing has been said or transcribed.")
@@ -151,7 +151,7 @@ class MusicMode(object):
 
             self.music.pause()
 
-            input = self.mic.activeListen(MUSIC=True)
+            input = self.mic.active_listen(MUSIC=True)
 
             if input:
                 if "close" in input.lower():

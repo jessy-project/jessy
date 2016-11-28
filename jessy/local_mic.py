@@ -14,19 +14,19 @@ class Mic:
         Initialize local mic
         '''
 
-    def passiveListen(self, persona):
+    def passive_listen(self, persona):
         '''
         Passive listener.
         '''
         return True, persona
 
-    def activeListenToAllOptions(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
+    def active_listen_to_all_options(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
         '''
         Active listener (all opts)
         '''
-        return [self.activeListen(THRESHOLD=THRESHOLD, LISTEN=LISTEN, MUSIC=MUSIC)]
+        return [self.active_listen(THRESHOLD=THRESHOLD, LISTEN=LISTEN, MUSIC=MUSIC)]
 
-    def activeListen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
+    def active_listen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
         '''
         Active listener
         '''
