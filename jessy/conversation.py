@@ -4,6 +4,9 @@ from brain import Brain
 
 
 class Conversation(object):
+    '''
+    Conversation loop class.
+    '''
 
     def __init__(self, persona, mic, profile):
         self._logger = logging.getLogger(__name__)
