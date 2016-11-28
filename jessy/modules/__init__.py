@@ -27,6 +27,7 @@ Abstract module interface
 '''
 
 from abc import ABCMeta, abstractmethod
+from jessy.config import load_config
 
 
 def lowercase(func):
@@ -72,7 +73,7 @@ class JessyModule(object):
 
     @abstractmethod
     def __init__(cls, config, mic):
-        cls._config = config
+        cls._config = load_config(cls.__module__, config)
         cls._mic = mic
 
     @abstractmethod
