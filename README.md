@@ -13,6 +13,10 @@ Installation process, documentation and other data right now is
 identical as on Jasper project:
 [jasperproject.github.io](http://jasperproject.github.io/).
 
+## Current development progress
+
+Current development progress is is also a roadmap :-) [can be found here](https://trello.com/b/cVIlRxdr/jessy).
+
 ## Contributing
 
 If you'd like to contribute to Jessy, please read through our
