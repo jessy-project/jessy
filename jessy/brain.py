@@ -74,6 +74,9 @@ class SubProcessRegistry(object):
 
 
 class Brain(object):
+    '''
+    Main loop for conversation query.
+    '''
 
     def __init__(self, mic, profile):
         """
