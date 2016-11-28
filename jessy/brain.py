@@ -50,7 +50,7 @@ class Brain(object):
                 else:
                     logger.warning("Module '{0}' is invalid".format(name))
 
-        modules.sort(key=lambda module: module.reference().PRIORITY, reverse=True)
+        modules.sort(key=lambda module: module.plugin.PRIORITY, reverse=True)
         return modules
 
     def query(self, texts):
@@ -64,7 +64,7 @@ class Brain(object):
         for module in self.modules:
             for text in texts:
                 try:
-                    if module.load(self.profile, self.mic).handle(text):
+                    if module.plugin.load(self.profile, self.mic).handle(text):
                         return
                 except Exception as ex:
                     self._logger.error('Failed to execute module: {0}'.format(ex))
