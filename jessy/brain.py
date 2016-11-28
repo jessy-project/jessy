@@ -9,6 +9,11 @@ class SubProcessRegistry(object):
     '''
     Register a generally available subprocess registry.
     '''
+    class Groups(object):
+        MUSIC = 'music'
+        SPEECH = 'speech'
+        SYSTEM = 'system'
+
     def __init__(self):
         self._logger = logging.getLogger(__name__)
         self.__groups = {}
