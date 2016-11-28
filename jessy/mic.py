@@ -12,6 +12,9 @@ import jessypath
 
 
 class Mic:
+    '''
+    Mic to handle all interactions.
+    '''
 
     speechRec = None
     speechRec_persona = None
