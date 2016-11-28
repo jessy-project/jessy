@@ -10,7 +10,7 @@ from jessy.modules import JessyModule
 URL = 'http://news.ycombinator.com'
 
 
-class HNStory:
+class HNStory(object):
 
     def __init__(self, title, URL):
         self.title = title
