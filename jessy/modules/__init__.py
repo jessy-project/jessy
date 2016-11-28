@@ -56,7 +56,7 @@ def is_valid_module(mod):
     :param mod:
     :return:
     '''
-    for ref in ['reference', 'load']:
+    for ref in ['plugin']:
         if not hasattr(mod, ref):
             return False
 
