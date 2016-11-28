@@ -72,9 +72,10 @@ class JessyModule(object):
     PRIORITY = 0
 
     @abstractmethod
-    def __init__(cls, config, mic):
+    def __init__(cls, config, mic, registry):
         cls._config = load_config(cls.__module__, config)
         cls._mic = mic
+        cls._process_registry = registry
 
     @abstractmethod
     def handle(cls, transcription):
