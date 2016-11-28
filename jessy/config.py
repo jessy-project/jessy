@@ -29,6 +29,7 @@ Configuration handler.
 import os
 import time
 import yaml
+import types
 from jessy import jessypath
 
 
@@ -88,12 +89,26 @@ def save_config(conf, overwrite=False):
 
     return path
 
-def load_config(path):
+
+def load_config(path, conf=None):
     '''
     Load configuration.
 
     :param path:
     :return:
     '''
-    return path and os.path.exists(path) and _deep_merge(yaml.load(open(path).read()),
-                                                         DEFAULT_CONFIG) or DEFAULT_CONFIG
+    config = {}
+    if path.startswith('/'):
+        config = (path and os.path.exists(path)
+                  and _deep_merge(conf or {}, _deep_merge(yaml.load(open(path).read()),
+                                                          DEFAULT_CONFIG)) or DEFAULT_CONFIG)
+    else:
+        if not isinstance(path, types.StringType):
+            raise OSError('Cannot load config: plugin name is passed of unknown type. '
+                          'Can be either a string name or the plugin module itself.')
+        p_path = os.path.join(jessypath.LOCAL_STORE, 'plugins/{0}.conf'.format(path))
+        if os.path.exists(p_path):
+            config = _deep_merge(yaml.load(open(p_path).read()),
+                                 _deep_merge(conf or {}, config))
+
+    return config
