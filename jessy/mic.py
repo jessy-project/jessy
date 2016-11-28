@@ -11,7 +11,7 @@ import alteration
 import jessypath
 
 
-class Mic:
+class Mic(object):
     '''
     Mic to handle all interactions.
     '''
