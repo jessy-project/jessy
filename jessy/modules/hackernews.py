@@ -145,5 +145,4 @@ class HackerNews(JessyModule):
         return ['hacker', 'news']
 
 
-load = HackerNews.load
-reference = HackerNews.reference
+plugin = HackerNews

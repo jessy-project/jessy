@@ -177,5 +177,4 @@ class TimeAlarm(JessyModule):
                 'forecast', 'outside', 'hot', 'jacket', 'coat', 'rain']
 
 
-load = TimeAlarm.load
-reference = TimeAlarm.reference
+plugin = TimeAlarm

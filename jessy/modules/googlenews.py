@@ -139,5 +139,4 @@ class GNews(JessyModule):
         return ['headline']
 
 
-load = GNews.load
-reference = GNews.reference
+plugin = GNews

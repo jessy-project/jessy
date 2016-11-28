@@ -38,5 +38,4 @@ class HelloJessy(JessyModule):
         return ['hello']
 
 
-load = HelloJessy.load
-reference = HelloJessy.reference
+plugin = HelloJessy
