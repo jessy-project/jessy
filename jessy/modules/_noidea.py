@@ -46,6 +46,4 @@ class _NoIdea(JessyModule):
     def keywords(cls):
         return []
 
-
-load = _NoIdea.load
-reference = _NoIdea.reference
+plugin = _NoIdea

@@ -412,5 +412,4 @@ class Spotify(JessyModule):
         return ['spotify']
 
 
-load = Spotify.load
-reference = Spotify.reference
+plugin = Spotify

@@ -39,5 +39,4 @@ class TimeAlarm(JessyModule):
         return ['time']
 
 
-load = TimeAlarm.load
-reference = TimeAlarm.reference
+plugin = TimeAlarm

@@ -56,7 +56,7 @@ def is_valid_module(mod):
     :param mod:
     :return:
     '''
-    for ref in ['reference', 'load']:
+    for ref in ['plugin']:
         if not hasattr(mod, ref):
             return False
 
@@ -113,14 +113,3 @@ class JessyModule(object):
             raise TypeError('Launched module is a wrong type. '
                             'Should be a subclass of JessyModule.')
         return cls(*args, **kwargs)
-
-    @classmethod
-    def reference(cls):
-        '''
-        Reference a class
-        :return:
-        '''
-        if type(cls) != type(JessyModule):
-            raise TypeError('Referenced module is a wrong type. '
-                            'Should be a subclass of JessyModule.')
-        return cls

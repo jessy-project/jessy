@@ -144,5 +144,4 @@ class GMail(JessyModule):
         return ['email', 'inbox']
 
 
-load = GMail.load
-reference = GMail.reference
+plugin = GMail
