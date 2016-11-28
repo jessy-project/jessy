@@ -5,6 +5,74 @@ from jessy import jessypath
 from jessy.modules import is_valid_module
 
 
+class SubProcessRegistry(object):
+    '''
+    Register a generally available subprocess registry.
+    '''
+    def __init__(self):
+        self._logger = logging.getLogger(__name__)
+        self.__groups = {}
+
+    @property
+    def groups(self):
+        '''
+        Returns available groups
+        :return:
+        '''
+        return self.__groups.keys()[:]  # Internal store is immutable
+
+    @groups.setter
+    def group(self, value):
+        '''
+        Add a new group.
+
+        :param value:
+        :return:
+        '''
+        if value not in self.__groups:
+            self.__groups[value] = {}
+
+    def process(self, group, name):
+        '''
+        Get processes within a group.
+
+        :param group:
+        :return:
+        '''
+        return self.__groups.get(group, {}).get(name)
+
+    def add_process(self, group, name, process):
+        '''
+        Set process to a group
+
+        :param group:
+        :param name:
+        :param process:
+        :return:
+        '''
+        self.group = group
+        if self.__groups[group].get(name) is None:
+            self.__groups[group][name] = process
+            self._logger.debug("Added process '{0}@{1}'".format(name, group))
+
+        return self
+
+    def terminate_all(self):
+        '''
+        Terminate all processes.
+
+        :return:
+        '''
+        for group in self.__groups.values():
+            for name, process in group.items():
+                try:
+                    self._logger.debug("Terminating process '{0}@{1}'".format(name, group))
+                    process.terminate()
+                    self._logger.debug("Process '{0}@{1}' has been terminated".format(name, group))
+                except Exception as ex:
+                    self._logger.error("Error terminate process '{0}@{1}': {2}".format(name, group, ex))
+
+
 class Brain(object):
 
     def __init__(self, mic, profile):
