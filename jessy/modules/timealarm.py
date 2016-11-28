@@ -1,35 +1,43 @@
 # -*- coding: utf-8-*-
 import datetime
 import re
-from jessy.app_utils import getTimezone
+from jessy.app_utils import getTimezone as get_timezone
 from semantic.dates import DateService
+from jessy.modules import JessyModule
 
-WORDS = ["TIME"]
 
-
-def handle(text, mic, profile):
+def _handle(mic, profile):
     """
-        Reports the current time based on the user's timezone.
+    Reports the current time based on the user's timezone.
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-        mic -- used to interact with the user (for both input and output)
-        profile -- contains information related to the user (e.g., phone
-                   number)
+    Arguments:
+    mic
+      used to interact with the user (for both input and output)
+
+    profile
+      contains information related to the user (e.g., phone number)
     """
 
-    tz = getTimezone(profile)
-    now = datetime.datetime.now(tz=tz)
-    service = DateService()
-    response = service.convertTime(now)
-    mic.say("It is %s right now." % response)
+    now = datetime.datetime.now(tz=get_timezone(profile))
+    mic.say("It is {0} right now.".format(DateService().convertTime(now)))
 
 
-def isValid(text):
-    """
-        Returns True if input is related to the time.
+class TimeAlarm(JessyModule):
+    '''
+    Hello, Jessy!
+    '''
+    def __init__(self, config, mic):
+        JessyModule.__init__(self, config, mic)
 
-        Arguments:
-        text -- user-input, typically transcribed speech
-    """
-    return bool(re.search(r'\btime\b', text, re.IGNORECASE))
+    def handle(self, transcription):
+        if self.matches(transcription):
+            _handle(self._mic, self._config)
+            return True
+
+    @classmethod
+    def keywords(cls):
+        return ['time']
+
+
+load = TimeAlarm.load
+reference = TimeAlarm.reference
