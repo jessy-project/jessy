@@ -11,12 +11,12 @@ from semantic.dates import DateService
 from jessy.modules import JessyModule
 
 
-def replaceAcronyms(text):
+def replace_acronyms(text):
     """
     Replaces some commonly-used acronyms for an improved verbal weather report.
     """
 
-    def parseDirections(text):
+    def parse_directions(text):
         words = {
             'N': 'north',
             'S': 'south',
@@ -28,7 +28,7 @@ def replaceAcronyms(text):
     acronyms = re.findall(r'\b([NESW]+)\b', text)
 
     for w in acronyms:
-        text = text.replace(w, parseDirections(w))
+        text = text.replace(w, parse_directions(w))
 
     text = re.sub(r'(\b\d+)F(\b)', '\g<1> Fahrenheit\g<2>', text)
     text = re.sub(r'(\b)mph(\b)', '\g<1>miles per hour\g<2>', text)
@@ -153,7 +153,7 @@ def _handle(text, mic, profile):
             continue
 
     if output:
-        output = replaceAcronyms(output)
+        output = replace_acronyms(output)
         mic.say(output)
     else:
         mic.say(
