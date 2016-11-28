@@ -17,7 +17,7 @@ class HNStory(object):
         self.URL = URL
 
 
-def getTopStories(maxResults=None):
+def get_top_stories(max_results=None):
     """
         Returns the top headlines from Hacker News.
 
@@ -32,8 +32,8 @@ def getTopStories(maxResults=None):
     matches = [m.a for m in matches if m.a and m.text != u'More']
     matches = [HNStory(m.text, m['href']) for m in matches]
 
-    if maxResults:
-        num_stories = min(maxResults, len(matches))
+    if max_results:
+        num_stories = min(max_results, len(matches))
         return random.sample(matches, num_stories)
 
     return matches
@@ -52,13 +52,13 @@ def _handle(mic, profile):
                    number)
     """
     mic.say("Pulling up some stories.")
-    stories = getTopStories(maxResults=3)
+    stories = get_top_stories(max_results=3)
     all_titles = '... '.join(str(idx + 1) + ") " +
                              story.title for idx, story in enumerate(stories))
 
-    def handleResponse(text):
+    def handle_response(text):
 
-        def extractOrdinals(text):
+        def extract_ordinals(text):
             output = []
             service = NumberService()
             for w in text.split():
@@ -66,7 +66,7 @@ def _handle(mic, profile):
                     output.append(service.__ordinals__[w])
             return [service.parse(w) for w in output]
 
-        chosen_articles = extractOrdinals(text)
+        chosen_articles = extract_ordinals(text)
         send_all = not chosen_articles and app_utils.is_positive(text)
 
         if send_all or chosen_articles:
@@ -75,7 +75,7 @@ def _handle(mic, profile):
             if profile['prefers_email']:
                 body = "<ul>"
 
-            def formatArticle(article):
+            def format_article(article):
                 tiny_url = app_utils.generate_tiny_url(article.URL)
 
                 if profile['prefers_email']:
@@ -86,7 +86,7 @@ def _handle(mic, profile):
 
             for idx, article in enumerate(stories):
                 if send_all or (idx + 1) in chosen_articles:
-                    article_link = formatArticle(article)
+                    article_link = format_article(article)
 
                     if profile['prefers_email']:
                         body += article_link
@@ -120,7 +120,7 @@ def _handle(mic, profile):
         mic.say("Here are some front-page articles. " +
                 all_titles + ". Would you like me to send you these? " +
                 "If so, which?")
-        handleResponse(mic.active_listen())
+        handle_response(mic.active_listen())
 
     else:
         mic.say("Here are some front-page articles. {0}".format(all_titles.encode('utf-8')))
