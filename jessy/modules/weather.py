@@ -6,7 +6,7 @@ import urllib
 import feedparser
 import requests
 import bs4
-from jessy.app_utils import getTimezone
+from jessy.app_utils import get_timezone
 from semantic.dates import DateService
 from jessy.modules import JessyModule
 
@@ -113,7 +113,7 @@ def _handle(text, mic, profile):
                 "make sure that you've set your location on the dashboard.")
         return
 
-    tz = getTimezone(profile)
+    tz = get_timezone(profile)
 
     service = DateService(tz=tz)
     date = service.extractDay(text)

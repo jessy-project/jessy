@@ -62,7 +62,7 @@ def _handle(mic, profile):
             return [service.parse(w) for w in output]
 
         chosen_articles = extractOrdinals(text)
-        send_all = not chosen_articles and app_utils.isPositive(text)
+        send_all = not chosen_articles and app_utils.is_positive(text)
 
         if send_all or chosen_articles:
             mic.say("Sure, just give me a moment")
@@ -71,7 +71,7 @@ def _handle(mic, profile):
                 body = "<ul>"
 
             def formatArticle(article):
-                tiny_url = app_utils.generateTinyURL(article.URL)
+                tiny_url = app_utils.generate_tiny_url(article.URL)
 
                 if profile['prefers_email']:
                     return "<li><a href=\'%s\'>%s</a></li>" % (tiny_url,
@@ -86,8 +86,8 @@ def _handle(mic, profile):
                     if profile['prefers_email']:
                         body += article_link
                     else:
-                        if not app_utils.emailUser(profile, SUBJECT="",
-                                                   BODY=article_link):
+                        if not app_utils.email_user(profile, SUBJECT="",
+                                                    BODY=article_link):
                             mic.say("I'm having trouble sending you these " +
                                     "articles. Please make sure that your " +
                                     "phone number and carrier are correct " +
@@ -97,9 +97,9 @@ def _handle(mic, profile):
             # if prefers email, we send once, at the end
             if profile['prefers_email']:
                 body += "</ul>"
-                if not app_utils.emailUser(profile,
-                                           SUBJECT="Your Top Headlines",
-                                           BODY=body):
+                if not app_utils.email_user(profile,
+                                            SUBJECT="Your Top Headlines",
+                                            BODY=body):
                     mic.say("I'm having trouble sending you these articles. " +
                             "Please make sure that your phone number and " +
                             "carrier are correct on the dashboard.")
