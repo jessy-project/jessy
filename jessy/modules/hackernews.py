@@ -10,14 +10,14 @@ from jessy.modules import JessyModule
 URL = 'http://news.ycombinator.com'
 
 
-class HNStory:
+class HNStory(object):
 
     def __init__(self, title, URL):
         self.title = title
         self.URL = URL
 
 
-def getTopStories(maxResults=None):
+def get_top_stories(max_results=None):
     """
         Returns the top headlines from Hacker News.
 
@@ -32,8 +32,8 @@ def getTopStories(maxResults=None):
     matches = [m.a for m in matches if m.a and m.text != u'More']
     matches = [HNStory(m.text, m['href']) for m in matches]
 
-    if maxResults:
-        num_stories = min(maxResults, len(matches))
+    if max_results:
+        num_stories = min(max_results, len(matches))
         return random.sample(matches, num_stories)
 
     return matches
@@ -52,13 +52,13 @@ def _handle(mic, profile):
                    number)
     """
     mic.say("Pulling up some stories.")
-    stories = getTopStories(maxResults=3)
+    stories = get_top_stories(max_results=3)
     all_titles = '... '.join(str(idx + 1) + ") " +
                              story.title for idx, story in enumerate(stories))
 
-    def handleResponse(text):
+    def handle_response(text):
 
-        def extractOrdinals(text):
+        def extract_ordinals(text):
             output = []
             service = NumberService()
             for w in text.split():
@@ -66,8 +66,8 @@ def _handle(mic, profile):
                     output.append(service.__ordinals__[w])
             return [service.parse(w) for w in output]
 
-        chosen_articles = extractOrdinals(text)
-        send_all = not chosen_articles and app_utils.isPositive(text)
+        chosen_articles = extract_ordinals(text)
+        send_all = not chosen_articles and app_utils.is_positive(text)
 
         if send_all or chosen_articles:
             mic.say("Sure, just give me a moment")
@@ -75,8 +75,8 @@ def _handle(mic, profile):
             if profile['prefers_email']:
                 body = "<ul>"
 
-            def formatArticle(article):
-                tiny_url = app_utils.generateTinyURL(article.URL)
+            def format_article(article):
+                tiny_url = app_utils.generate_tiny_url(article.URL)
 
                 if profile['prefers_email']:
                     return "<li><a href=\'%s\'>%s</a></li>" % (tiny_url,
@@ -86,13 +86,13 @@ def _handle(mic, profile):
 
             for idx, article in enumerate(stories):
                 if send_all or (idx + 1) in chosen_articles:
-                    article_link = formatArticle(article)
+                    article_link = format_article(article)
 
                     if profile['prefers_email']:
                         body += article_link
                     else:
-                        if not app_utils.emailUser(profile, SUBJECT="",
-                                                   BODY=article_link):
+                        if not app_utils.email_user(profile, SUBJECT="",
+                                                    BODY=article_link):
                             mic.say("I'm having trouble sending you these " +
                                     "articles. Please make sure that your " +
                                     "phone number and carrier are correct " +
@@ -102,10 +102,10 @@ def _handle(mic, profile):
             # if prefers email, we send once, at the end
             if profile['prefers_email']:
                 body += "</ul>"
-                if not app_utils.emailUser(profile,
-                                           SUBJECT="From the Front Page of " +
+                if not app_utils.email_user(profile,
+                                            SUBJECT="From the Front Page of " +
                                                    "Hacker News",
-                                           BODY=body):
+                                            BODY=body):
                     mic.say("I'm having trouble sending you these articles. " +
                             "Please make sure that your phone number and " +
                             "carrier are correct on the dashboard.")
@@ -120,7 +120,7 @@ def _handle(mic, profile):
         mic.say("Here are some front-page articles. " +
                 all_titles + ". Would you like me to send you these? " +
                 "If so, which?")
-        handleResponse(mic.activeListen())
+        handle_response(mic.active_listen())
 
     else:
         mic.say("Here are some front-page articles. {0}".format(all_titles.encode('utf-8')))

@@ -15,11 +15,11 @@ def run():
           "not to enter the requested information, just hit 'Enter' with a " +
           "blank field to continue.")
 
-    def simple_request(var, cleanVar, cleanInput=None):
-        input = raw_input(cleanVar + ": ")
+    def simple_request(var, clean_var, clean_input=None):
+        input = raw_input(clean_var + ": ")
         if input:
-            if cleanInput:
-                input = cleanInput(input)
+            if clean_input:
+                input = clean_input(input)
             profile[var] = input
 
     # name
@@ -63,7 +63,7 @@ def run():
         profile['carrier'] = carrier
 
     # location
-    def verifyLocation(place):
+    def verify_location(place):
         feed = feedparser.parse('http://rss.wunderground.com/auto/rss_full/' +
                                 place)
         numEntries = len(feed['entries'])
@@ -77,7 +77,7 @@ def run():
           "are outside the US, insert the name of your nearest big " +
           "town/city.  For weather requests.")
     location = raw_input("Location: ")
-    while location and not verifyLocation(location):
+    while location and not verify_location(location):
         print("Weather not found. Please try another location.")
         location = raw_input("Location: ")
     if location:
@@ -138,8 +138,8 @@ def run():
     print("Writing to profile...")
     if not os.path.exists(jessypath.CONFIG_PATH):
         os.makedirs(jessypath.CONFIG_PATH)
-    outputFile = open(jessypath.config("profile.conf"), "w")
-    yaml.dump(profile, outputFile, default_flow_style=False)
+    output_file = open(jessypath.config("profile.conf"), "w")
+    yaml.dump(profile, output_file, default_flow_style=False)
     print("Done.")
 
 if __name__ == "__main__":

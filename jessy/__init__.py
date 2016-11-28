@@ -70,4 +70,4 @@ class Jessy(object):
         self.mic.say(salutation)
 
         Conversation(self.config.get('persona', 'jasper').upper(),
-                     self.mic, self.config).handleForever()
+                     self.mic, self.config).handle_forever()

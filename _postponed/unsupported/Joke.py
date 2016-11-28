@@ -51,9 +51,9 @@ def handle(text, mic, profile):
         def punchLine(text):
             mic.say(joke[1])
 
-        punchLine(mic.activeListen())
+        punchLine(mic.active_listen())
 
-    firstLine(mic.activeListen())
+    firstLine(mic.active_listen())
 
 
 def isValid(text):

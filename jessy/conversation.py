@@ -4,6 +4,9 @@ from brain import Brain
 
 
 class Conversation(object):
+    '''
+    Conversation loop class.
+    '''
 
     def __init__(self, persona, mic, profile):
         self._logger = logging.getLogger(__name__)
@@ -12,7 +15,7 @@ class Conversation(object):
         self.profile = profile
         self.brain = Brain(mic, profile)
 
-    def handleForever(self):
+    def handle_forever(self):
         """
         Delegates user input to the handling function when activated.
         """
@@ -20,7 +23,7 @@ class Conversation(object):
                           self.persona)
         while True:
             self._logger.debug("Started listening for keyword '%s'", self.persona)
-            threshold, transcribed = self.mic.passiveListen(self.persona)
+            threshold, transcribed = self.mic.passive_listen(self.persona)
             self._logger.debug("Stopped listening for keyword '%s'", self.persona)
 
             if not transcribed or not threshold:
@@ -29,7 +32,7 @@ class Conversation(object):
 
             self._logger.info("Keyword '%s' has been said!", self.persona)
             self._logger.debug("Started to listen actively with threshold: %r", threshold)
-            input = self.mic.activeListenToAllOptions(threshold)
+            input = self.mic.active_listen_to_all_options(threshold)
             self._logger.debug("Stopped to listen actively with threshold: %r", threshold)
 
             if input:

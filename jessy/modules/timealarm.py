@@ -1,7 +1,7 @@
 # -*- coding: utf-8-*-
 import datetime
 import re
-from jessy.app_utils import getTimezone as get_timezone
+from jessy.app_utils import get_timezone as get_timezone
 from semantic.dates import DateService
 from jessy.modules import JessyModule
 

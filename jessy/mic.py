@@ -11,7 +11,10 @@ import alteration
 import jessypath
 
 
-class Mic:
+class Mic(object):
+    '''
+    Mic to handle all interactions.
+    '''
 
     speechRec = None
     speechRec_persona = None
@@ -39,12 +42,12 @@ class Mic:
     def __del__(self):
         self._audio.terminate()
 
-    def getScore(self, data):
+    def get_score(self, data):
         rms = audioop.rms(data, 2)
         score = rms / 3
         return score
 
-    def fetchThreshold(self):
+    def fetch_threshold(self):
 
         # TODO: Consolidate variables from the next three functions
         THRESHOLD_MULTIPLIER = 1.8
@@ -75,7 +78,7 @@ class Mic:
 
             # save this data point as a score
             lastN.pop(0)
-            lastN.append(self.getScore(data))
+            lastN.append(self.get_score(data))
             average = sum(lastN) / len(lastN)
 
         stream.stop_stream()
@@ -86,7 +89,7 @@ class Mic:
 
         return THRESHOLD
 
-    def passiveListen(self, PERSONA):
+    def passive_listen(self, PERSONA):
         """
         Listens for PERSONA in everyday sound. Times out after LISTEN_TIME, so
         needs to be restarted.
@@ -123,7 +126,7 @@ class Mic:
 
             # save this data point as a score
             lastN.pop(0)
-            lastN.append(self.getScore(data))
+            lastN.append(self.get_score(data))
             average = sum(lastN) / len(lastN)
 
         # this will be the benchmark to cause a disturbance over!
@@ -140,7 +143,7 @@ class Mic:
 
             data = stream.read(CHUNK)
             frames.append(data)
-            score = self.getScore(data)
+            score = self.get_score(data)
 
             if score > THRESHOLD:
                 didDetect = True
@@ -183,19 +186,19 @@ class Mic:
 
         return (False, transcribed)
 
-    def activeListen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
+    def active_listen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
         """
             Records until a second of silence or times out after 12 seconds
 
             Returns the first matching string or None
         """
 
-        options = self.activeListenToAllOptions(THRESHOLD, LISTEN, MUSIC)
+        options = self.active_listen_to_all_options(THRESHOLD, LISTEN, MUSIC)
         if options:
             return options[0]
 
-    def activeListenToAllOptions(self, THRESHOLD=None, LISTEN=True,
-                                 MUSIC=False):
+    def active_listen_to_all_options(self, THRESHOLD=None, LISTEN=True,
+                                     MUSIC=False):
         """
             Records until a second of silence or times out after 12 seconds
 
@@ -208,7 +211,7 @@ class Mic:
 
         # check if no threshold provided
         if THRESHOLD is None:
-            THRESHOLD = self.fetchThreshold()
+            THRESHOLD = self.fetch_threshold()
 
         self.speaker.play(jessypath.data('audio', 'beep_hi.wav'))
 
@@ -228,7 +231,7 @@ class Mic:
 
             data = stream.read(CHUNK)
             frames.append(data)
-            score = self.getScore(data)
+            score = self.get_score(data)
 
             lastN.pop(0)
             lastN.append(score)
