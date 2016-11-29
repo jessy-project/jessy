@@ -115,3 +115,14 @@ class JessyModule(object):
             raise TypeError('Launched module is a wrong type. '
                             'Should be a subclass of JessyModule.')
         return cls(*args, **kwargs)
+
+    def context(self):
+        '''
+        Return True if context needs to be saved.
+        The context of the module is the entry keywords.
+
+        Every next input will be joined with the context.
+
+        :return:
+        '''
+        return []
