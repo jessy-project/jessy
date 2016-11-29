@@ -71,11 +71,14 @@ class SubProcessRegistry(object):
         for group in self.__groups.values():
             for name, process in group.items():
                 try:
-                    self._logger.debug("Terminating process '{0}@{1}'".format(name, group))
+                    self._logger.debug("Terminating process "
+                                       "'{0}@{1}'".format(name, group))
                     process.terminate()
-                    self._logger.debug("Process '{0}@{1}' has been terminated".format(name, group))
+                    self._logger.debug("Process '{0}@{1}' has been "
+                                       "terminated".format(name, group))
                 except Exception as ex:
-                    self._logger.error("Error terminate process '{0}@{1}': {2}".format(name, group, ex))
+                    self._logger.error("Error terminate process "
+                                       "'{0}@{1}': {2}".format(name, group, ex))
 
 
 class Brain(object):
