@@ -132,8 +132,8 @@ class HackerNews(JessyModule):
     '''
     PRIORITY = 4
 
-    def __init__(self, config, mic):
-        JessyModule.__init__(self, config, mic)
+    def __init__(self, *args, **kwargs):
+        JessyModule.__init__(self, *args, **kwargs)
 
     def handle(self, transcription):
         if self.matches(transcription):

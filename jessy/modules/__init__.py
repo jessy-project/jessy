@@ -50,6 +50,26 @@ def lowercase(func):
     return caller
 
 
+def all_words(text, *words, **kwargs):
+    '''
+    Match all specified words in the text.
+
+    :param text:
+    :param words:
+    :param kwargs:
+    :return:
+    '''
+    exact = bool(kwargs.get('exact'))
+    found = 0
+    text = text.split(' ')
+    for word in words:
+        for item in text:
+            if (exact and item == word) or item.startswith(word):
+                found += 1
+
+    return found and found == len(words)
+
+
 def is_valid_module(mod):
     '''
     Check if module is valid.
@@ -72,9 +92,10 @@ class JessyModule(object):
     PRIORITY = 0
 
     @abstractmethod
-    def __init__(cls, config, mic):
+    def __init__(cls, config, mic, registry):
         cls._config = load_config(cls.__module__, config)
         cls._mic = mic
+        cls._process_registry = registry
 
     @abstractmethod
     def handle(cls, transcription):
@@ -114,3 +135,14 @@ class JessyModule(object):
             raise TypeError('Launched module is a wrong type. '
                             'Should be a subclass of JessyModule.')
         return cls(*args, **kwargs)
+
+    def context(self):
+        '''
+        Return True if context needs to be saved.
+        The context of the module is the entry keywords.
+
+        Every next input will be joined with the context.
+
+        :return:
+        '''
+        return []
