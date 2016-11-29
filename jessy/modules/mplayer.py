@@ -56,6 +56,12 @@ class MPlayerWrapper(JessyModule):
         self._mic.say("Playing")
 
     def handle(self, transcription):
+        '''
+        Handle the whole thing.
+
+        :param transcription:
+        :return:
+        '''
         if self.matches(transcription):
             self._handle()
             return True
