@@ -104,6 +104,7 @@ class Brain(object):
         self.modules = self.get_modules()
         self._logger = logging.getLogger(__name__)
         self.process_registry = SubProcessRegistry()
+        self._current_context = []
 
     @classmethod
     def get_modules(cls):
@@ -133,6 +134,16 @@ class Brain(object):
         modules.sort(key=lambda module: module.plugin.PRIORITY, reverse=True)
         return modules
 
+    def in_context(self, text):
+        '''
+        Add current context.
+
+        :param text:
+        :return:
+        '''
+
+        return '{0} {1}'.format(' '.join(self._current_context), text).strip()
+
     def query(self, texts):
         """
         Passes user input to the appropriate module, testing it against
@@ -144,9 +155,11 @@ class Brain(object):
         for module in self.modules:
             for text in texts:
                 try:
-                    if module.plugin.load(config=self.profile,
-                                          mic=self.mic,
-                                          registry=self.process_registry).handle(text):
+                    loader = module.plugin.load(config=self.profile,
+                                                mic=self.mic,
+                                                registry=self.process_registry)
+                    if loader.handle(self.in_context(text)):
+                        self._current_context = loader.context()
                         return
                 except Exception as ex:
                     self._logger.error('Failed to execute module: {0}'.format(ex))
