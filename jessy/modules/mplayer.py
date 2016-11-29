@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jessy.modules import JessyModule
+from jessy.modules import JessyModule, all_words
 from jessy.modules._mplayer.mpwrapper import MPlayer
 
 
@@ -32,6 +32,7 @@ class MPlayerWrapper(JessyModule):
     '''
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
+        self._stopped = False
         self._process_registry.add_process(self._process_registry.Groups.MUSIC,
                                            'mplayer', MPlayer())
 
@@ -43,7 +44,7 @@ class MPlayerWrapper(JessyModule):
         '''
         return self._process_registry.process(self._process_registry.Groups.MUSIC, 'mplayer')
 
-    def _handle(self):
+    def _handle(self, text):
         '''
         Handles the whole thing.
 
@@ -51,9 +52,23 @@ class MPlayerWrapper(JessyModule):
         :param profile:
         :return:
         '''
+        self._stopped = False
         self._get_mp().station = "http://us1.internet-radio.com:11094/"
-        self._get_mp().play()
-        self._mic.say("Playing")
+        if all_words(text, 'stop') or all_words(text, 'shut', 'up'):
+            self._get_mp().stop()
+            self._mic.say("Stopped")
+            self._stopped = True
+        elif all_words(text, 'quieter') or all_words(text, 'more', 'quiet'):
+            self._get_mp().quieter()
+        elif all_words(text, 'louder') or all_words(text, 'more', 'loud'):
+            self._get_mp().louder()
+        elif all_words(text, 'mute', exact=True):
+            self._get_mp().mute()
+        elif all_words(text, 'unmute', exact=True):
+            self._get_mp().unmute()
+        else:
+            self._get_mp().play()
+            self._mic.say("Playing")
 
     def handle(self, transcription):
         '''
@@ -63,7 +78,7 @@ class MPlayerWrapper(JessyModule):
         :return:
         '''
         if self.matches(transcription):
-            self._handle()
+            self._handle(transcription.lower())
             return True
 
     def context(self):
