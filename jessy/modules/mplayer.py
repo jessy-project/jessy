@@ -60,6 +60,13 @@ class MPlayerWrapper(JessyModule):
             self._handle()
             return True
 
+    def context(self):
+        '''
+        Save context
+        :return:
+        '''
+        return not self._stopped and self.keywords() or []
+
     @classmethod
     def keywords(cls):
         return ['online', 'radio']
