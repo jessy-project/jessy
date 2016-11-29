@@ -50,6 +50,26 @@ def lowercase(func):
     return caller
 
 
+def all_words(text, *words, **kwargs):
+    '''
+    Match all specified words in the text.
+
+    :param text:
+    :param words:
+    :param kwargs:
+    :return:
+    '''
+    exact = bool(kwargs.get('exact'))
+    found = 0
+    text = text.split(' ')
+    for word in words:
+        for item in text:
+            if (exact and item == word) or item.startswith(word):
+                found += 1
+
+    return found and found == len(words)
+
+
 def is_valid_module(mod):
     '''
     Check if module is valid.
