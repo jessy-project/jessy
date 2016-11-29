@@ -69,7 +69,7 @@ class MPlayerWrapper(JessyModule):
 
     @classmethod
     def keywords(cls):
-        return ['online', 'radio']
+        return ['online', 'radio']  # Any! Todo: Should be "all of them" for context.
 
 
 plugin = MPlayerWrapper
