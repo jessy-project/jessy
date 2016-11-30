@@ -80,9 +80,8 @@ def all_words(text, *words, **kwargs):
     '''
     exact = bool(kwargs.get('exact'))
     found = 0
-    text = text.split(' ')
     for word in words:
-        for item in text:
+        for item in text.split(' '):
             if (exact and item == word) or item.startswith(word):
                 found += 1
 
