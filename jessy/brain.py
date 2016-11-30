@@ -107,8 +107,7 @@ class Brain(object):
         self.process_registry = SubProcessRegistry()
         self._current_context = []
 
-    @classmethod
-    def get_modules(cls):
+    def get_modules(self):
         """
         Dynamically loads all the modules in the modules folder and sorts
         them by the PRIORITY key. If no PRIORITY is defined for a given
