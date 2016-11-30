@@ -116,9 +116,8 @@ class Brain(object):
         """
 
         logger = logging.getLogger(__name__)
-        locations = [jessypath.PLUGIN_PATH]
-        logger.debug("Looking for modules in: %s",
-                     ', '.join(["'%s'" % location for location in locations]))
+        locations = list(set([jessypath.PLUGIN_PATH] + self.profile['modules']))
+        logger.debug("Looking for modules in: %s", ', '.join(["'%s'" % location for location in locations]))
         modules = []
         for finder, name, ispkg in pkgutil.walk_packages(locations):
             if ispkg:
