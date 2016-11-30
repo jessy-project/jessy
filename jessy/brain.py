@@ -1,6 +1,7 @@
 # -*- coding: utf-8-*-
 import logging
 import pkgutil
+import os
 from jessy import jessypath
 from jessy.modules import is_valid_module
 
@@ -120,6 +121,8 @@ class Brain(object):
                      ', '.join(["'%s'" % location for location in locations]))
         modules = []
         for finder, name, ispkg in pkgutil.walk_packages(locations):
+            if ispkg:
+                continue
             try:
                 mod = finder.find_module(name).load_module(name)
             except Exception as ex:

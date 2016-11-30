@@ -50,6 +50,25 @@ def lowercase(func):
     return caller
 
 
+def any_words(text, *words, **kwargs):
+    '''
+    Match any of specified words in the text.
+
+    :param text:
+    :param words:
+    :param kwargs:
+    :return:
+    '''
+    exact = bool(kwargs.get('exact'))
+    for word in words:
+        word = word.lower()
+        for token in text.split(' '):
+            token = token.lower()
+            if (exact and token == word) or token.startswith(word):
+                return True
+    return False
+
+
 def all_words(text, *words, **kwargs):
     '''
     Match all specified words in the text.
@@ -61,9 +80,8 @@ def all_words(text, *words, **kwargs):
     '''
     exact = bool(kwargs.get('exact'))
     found = 0
-    text = text.split(' ')
     for word in words:
-        for item in text:
+        for item in text.split(' '):
             if (exact and item == word) or item.startswith(word):
                 found += 1
 
