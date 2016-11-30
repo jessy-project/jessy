@@ -37,7 +37,9 @@ class MPlayerWrapper(JessyModule):
         JessyModule.__init__(self, *args, **kwargs)
         self._stopped = False
         self._process_registry.add_process(self._process_registry.Groups.MUSIC,
-                                           'mplayer', MPlayer())
+                                           'mplayer', mpwrapper.MPlayer())
+        self._playlist = yaml.load(open(os.path.join(os.path.dirname(mpwrapper.__file__),
+                                                     'stations.conf'), 'r').read())
 
     def _get_mp(self):
         '''
@@ -46,6 +48,29 @@ class MPlayerWrapper(JessyModule):
         :return:
         '''
         return self._process_registry.process(self._process_registry.Groups.MUSIC, 'mplayer')
+
+    def _get_genre(self, text):
+        '''
+        Select a station from the database.
+
+        :param text:
+        :return:
+        '''
+        for genre in self._playlist.keys():
+            if any_words(text, *genre.split(' ')):
+                return genre
+
+        self._mic.say('I did not understand the genre you want. Let me suggest you something.')
+        return random.choice(self._playlist.keys())
+
+    def _get_stations(self, genre):
+        '''
+        Get stations by chosen genre.
+
+        :param genre:
+        :return:
+        '''
+        return random.choice(self._playlist.get(genre, [])).items()[0]
 
     def _handle(self, text):
         '''
@@ -56,7 +81,6 @@ class MPlayerWrapper(JessyModule):
         :return:
         '''
         self._stopped = False
-        self._get_mp().station = "http://us1.internet-radio.com:11094/"
         if all_words(text, 'stop') or all_words(text, 'shut', 'up'):
             self._get_mp().stop()
             self._mic.say("Stopped")
@@ -70,8 +94,10 @@ class MPlayerWrapper(JessyModule):
         elif all_words(text, 'unmute', exact=True):
             self._get_mp().unmute()
         else:
+            station_name, station_url = self._get_stations(self._get_genre(text))
+            self._get_mp().station = station_url
             self._get_mp().play()
-            self._mic.say("Playing")
+            self._mic.say("Playing {0}".format(station_name))
 
     def handle(self, transcription):
         '''
