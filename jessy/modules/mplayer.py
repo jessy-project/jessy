@@ -22,8 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jessy.modules import JessyModule, all_words
-from jessy.modules._mplayer.mpwrapper import MPlayer
+import os
+import yaml
+import random
+from jessy.modules import JessyModule, all_words, any_words
+from jessy.modules._mplayer import mpwrapper
 
 
 class MPlayerWrapper(JessyModule):
