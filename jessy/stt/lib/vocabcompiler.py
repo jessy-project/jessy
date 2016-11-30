@@ -517,7 +517,10 @@ def get_all_phrases():
     """
     phrases = []
 
-    modules = brain.Brain.get_modules()
+    config = {
+        'modules': [jessypath.PLUGIN_PATH]  # Ignores custom!
+    }
+    modules = brain.Brain(None, config).get_modules()
     for module in modules:
         phrases.extend(get_phrases_from_module(module))
 
