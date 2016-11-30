@@ -107,8 +107,7 @@ class Brain(object):
         self.process_registry = SubProcessRegistry()
         self._current_context = []
 
-    @classmethod
-    def get_modules(cls):
+    def get_modules(self):
         """
         Dynamically loads all the modules in the modules folder and sorts
         them by the PRIORITY key. If no PRIORITY is defined for a given
@@ -116,9 +115,8 @@ class Brain(object):
         """
 
         logger = logging.getLogger(__name__)
-        locations = [jessypath.PLUGIN_PATH]
-        logger.debug("Looking for modules in: %s",
-                     ', '.join(["'%s'" % location for location in locations]))
+        locations = list(set([jessypath.PLUGIN_PATH] + self.profile['modules']))
+        logger.debug("Looking for modules in: %s", ', '.join(["'%s'" % location for location in locations]))
         modules = []
         for finder, name, ispkg in pkgutil.walk_packages(locations):
             if ispkg:

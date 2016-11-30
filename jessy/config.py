@@ -43,6 +43,7 @@ DEFAULT_CONFIG = {
     'gmail_password': '',
     'prefers_email': False,
     'timezone': time.strftime('%Z', time.gmtime()),
+    'modules': [],
 
     'stt_engine': 'pocketsphinx',
     'pocketsphinx': {
