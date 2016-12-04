@@ -26,6 +26,8 @@
 Abstract module interface
 '''
 
+import os
+import time
 from abc import ABCMeta, abstractmethod
 from jessy.config import load_config
 
@@ -102,6 +104,41 @@ def is_valid_module(mod):
     return True
 
 
+def in_range(value, range):
+    '''
+    Keep an int within the range.
+
+    :param value:
+    :param range:
+    :return:
+    '''
+    return (value <= 0 and 1 or value >= range and range + 1 or value + 1) - 1
+
+
+# TODO: Move this to the mic generally available for everything
+class Phrase(object):
+    '''
+    Prase for Mic articulation
+    '''
+    def __init__(self):
+        self.__text = ''
+        self.__pause = 0
+
+    def text(self, value=None):
+        if value:
+            self.__text = value.split(os.linesep)[0]
+            return self
+        else:
+            return self.__text
+
+    def pause(self, value=None):
+        if value:
+            self.__pause = in_range(int(value), 3)
+            return self
+        else:
+            return self.__pause
+
+
 class JessyModule(object):
     '''
     Interface to a Jessy module.
@@ -114,6 +151,19 @@ class JessyModule(object):
         cls._config = load_config(cls.__module__, config)
         cls._mic = mic
         cls._process_registry = registry
+
+    def say(self, text):
+        '''
+        An alias to the mic "say"
+
+        :param text:
+        :return:
+        '''
+        if isinstance(text, str):
+            self._mic.say(text)
+        elif isinstance(text, Phrase):
+            self._mic.say(text.text())
+            time.sleep(text.pause())
 
     @abstractmethod
     def handle(cls, transcription):
