@@ -65,33 +65,45 @@ class DefineWord(JessyModule):
 
         return definition
 
-    def _get_answer(self, definition):
+    def ask_wikipedia(self, definition):
         '''
-        Get answer.
+        Ask Wikipedia for the definition.
 
         :param definition:
-        :return: A series of sentences that needs to be said.
+        :return:
+        '''
+        # TODO: this method should run in a separate process, asynchronously
+
+        out = []
+        if not wikipedia:
+            return out
+
+        page_titles = wikipedia.search(definition)
+        page = None
+        if page_titles:
+            for page_title in page_titles:
+                if page_title.lower() == definition:
+                    page = wikipedia.page(page_title)
+                    break
+            if not page and 'disambiguation' not in page_titles[0]:
+                page = wikipedia.page(page_titles[0])
+
+        if page:
+            out.append(Phrase().text(page.content.split('==')[0]
+                                     .split('\n')[0]
+                                     .encode('utf-8', 'ignore')).pause(1))
+
+        return out
+
+
+    def ask_duck(self, definition):
+        '''
+        Ask duckduckgo for the definition
+
+        :param definition:
+        :return:
         '''
         answer = []
-
-        # Wikipedia
-        if wikipedia:
-            page_titles = wikipedia.search(definition)
-            page = None
-            if page_titles:
-                for page_title in page_titles:
-                    if page_title.lower() == definition:
-                        page = wikipedia.page(page_title)
-                        break
-                if not page and 'disambiguation' not in page_titles[0]:
-                    page = wikipedia.page(page_titles[0])
-
-            if page:
-                answer.append(Phrase().text(page.content.split('==')[0]
-                                            .split('\n')[0]
-                                            .encode('utf-8', 'ignore')).pause(1))
-
-        # Duck
         result = duck.query(definition)
         if result.type == 'disambiguation' and  result.related:
             related = [res for res in result.related if hasattr(res, 'text') and not res.text.endswith('...')][:5]
@@ -107,8 +119,23 @@ class DefineWord(JessyModule):
             for r_num, r_data in enumerate(related):
                 answer.append(Phrase().text("{}.".format(self.ORDERS[r_num + 1])).pause(1))
                 answer.append(Phrase().text(r_data.text.encode('UTF-8', 'ignore')).pause(1))
+        return answer
+
+    def _get_answer(self, definition):
+        '''
+        Get answer.
+
+        :param definition:
+        :return: A series of sentences that needs to be said.
+        '''
+        answer = self.ask_wikipedia(definition)
+        if not answer:
+            answer = self.ask_duck(definition)
+
         if answer:
             answer.append(Phrase().text('I hope this helps'))
+        else:
+            answer.append(Phrase().text('Unfortunately, I do not know what means {}'.format(definition)))
 
         return answer
 
