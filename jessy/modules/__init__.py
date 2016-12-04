@@ -115,6 +115,15 @@ class JessyModule(object):
         cls._mic = mic
         cls._process_registry = registry
 
+    def say(self, text):
+        '''
+        An alias to the mic "say"
+
+        :param text:
+        :return:
+        '''
+        self._mic.say(text)
+
     @abstractmethod
     def handle(cls, transcription):
         pass
