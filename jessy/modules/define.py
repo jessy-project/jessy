@@ -24,6 +24,11 @@
 
 from jessy.modules import JessyModule
 from jessy.modules import _ddg as duck
+
+try:
+    import wikipedia
+except ImportError as ex:
+    wikipedia = None
 import time
 
 
@@ -68,6 +73,23 @@ class DefineWord(JessyModule):
         :param definition:
         :return:
         '''
+        # Wikipedia
+        if wikipedia:
+            page_titles = wikipedia.search(definition)
+            page = None
+            if page_titles:
+                for page_title in page_titles:
+                    if page_title.lower() == definition:
+                        page = wikipedia.page(page_title)
+                        break
+                if not page and 'disambiguation' not in page_titles[0]:
+                    page = wikipedia.page(page_titles[0])
+
+            if page:
+                answer.append(Phrase().text(page.content.split('==')[0]
+                                            .split('\n')[0]
+                                            .encode('utf-8', 'ignore')).pause(1))
+
         result = duck.query(definition)
         if result.type == 'disambiguation' and  result.related:
             related = [res for res in result.related if hasattr(res, 'text') and not res.text.endswith('...')][:5]
