@@ -22,14 +22,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from jessy.modules import JessyModule
+from jessy.modules import JessyModule, Phrase
 from jessy.modules import _ddg as duck
 
 try:
     import wikipedia
 except ImportError as ex:
     wikipedia = None
-import time
 
 
 class DefineWord(JessyModule):
