@@ -102,6 +102,17 @@ def is_valid_module(mod):
     return True
 
 
+def in_range(value, range):
+    '''
+    Keep an int within the range.
+
+    :param value:
+    :param range:
+    :return:
+    '''
+    return (value <= 0 and 1 or value >= range and range + 1 or value + 1) - 1
+
+
 class JessyModule(object):
     '''
     Interface to a Jessy module.
