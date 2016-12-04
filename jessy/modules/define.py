@@ -71,6 +71,7 @@ class DefineWord(JessyModule):
         Get answer.
 
         :param definition:
+        :return: A series of sentences that needs to be said.
         :return:
         '''
         # Wikipedia
