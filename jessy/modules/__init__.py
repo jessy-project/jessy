@@ -113,6 +113,30 @@ def in_range(value, range):
     return (value <= 0 and 1 or value >= range and range + 1 or value + 1) - 1
 
 
+# TODO: Move this to the mic generally available for everything
+class Phrase(object):
+    '''
+    Prase for Mic articulation
+    '''
+    def __init__(self):
+        self.__text = ''
+        self.__pause = 0
+
+    def text(self, value=None):
+        if value:
+            self.__text = value.split(os.linesep)[0]
+            return self
+        else:
+            return self.__text
+
+    def pause(self, value=None):
+        if value:
+            self.__pause = in_range(int(value), 3)
+            return self
+        else:
+            return self.__pause
+
+
 class JessyModule(object):
     '''
     Interface to a Jessy module.
