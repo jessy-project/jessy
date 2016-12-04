@@ -71,8 +71,9 @@ class DefineWord(JessyModule):
 
         :param definition:
         :return: A series of sentences that needs to be said.
-        :return:
         '''
+        answer = []
+
         # Wikipedia
         if wikipedia:
             page_titles = wikipedia.search(definition)
@@ -90,22 +91,26 @@ class DefineWord(JessyModule):
                                             .split('\n')[0]
                                             .encode('utf-8', 'ignore')).pause(1))
 
+        # Duck
         result = duck.query(definition)
         if result.type == 'disambiguation' and  result.related:
             related = [res for res in result.related if hasattr(res, 'text') and not res.text.endswith('...')][:5]
-            self.say('There {0} {1} definition{2} for this {3}'.format(
-                (len(related) - 1) and 'are' or 'is',
-                self.NUMBERS[len(related)],
-                (len(related) - 1) and 's' or '',
-                result.type))
+            answer.append(
+                Phrase().text('There {0} {1} definition{2} for this {3}'.format(
+                    (len(related) - 1) and 'are' or 'is',
+                    self.NUMBERS[len(related)],
+                    (len(related) - 1) and 's' or '',
+                    result.type
+                ))
+            )
 
             for r_num, r_data in enumerate(related):
-                self.say("{}.".format(self.ORDERS[r_num + 1]))
-                time.sleep(1)
-                self.say(r_data.text.encode('UTF-8', 'ignore'))
-                time.sleep(1)
+                answer.append(Phrase().text("{}.".format(self.ORDERS[r_num + 1])).pause(1))
+                answer.append(Phrase().text(r_data.text.encode('UTF-8', 'ignore')).pause(1))
+        if answer:
+            answer.append(Phrase().text('I hope this helps'))
 
-        self.say('I hope this helps')
+        return answer
 
     def _handle(self, text):
         '''
@@ -116,8 +121,10 @@ class DefineWord(JessyModule):
         '''
         definition = self._extract_definition(text)
         if definition:
-            self._mic.say('Let me look...')
+            self.say('Let me look...')
             answer = self._get_answer(definition)  # Should go background before saying 'please wait'
+            for phrase in answer:
+                self.say(phrase)
 
     def handle(self, transcription):
         if self.matches(transcription):
