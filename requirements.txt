@@ -30,3 +30,6 @@ pudb
 
 #Alsa Mixer and bindings
 pyalsaaudio>=0.8.2
+
+# Wikipedia
+wikipedia
