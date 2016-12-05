@@ -55,14 +55,28 @@ class DefineWord(JessyModule):
         :param text:
         :return:
         '''
-        text = text.lower()
-        definition = ''
-        for kwd in self.keywords():
-            if kwd in text:
-                definition = text.split(kwd)[-1].split(' ')[-1]
-                if definition:
-                    break
+        noise = ['me', 'a', 'the', 'of', 'is']  # Subject for i18n
 
+        # Prepare input text
+        text = text.lower()
+        for token in noise:
+            text = text.replace(' {} '.format(token), ' ')
+
+        # Get the definition
+        definition = ''
+        for kwd in ['define', 'meaning', 'definition', 'what']:
+            if kwd in text:
+                definition = text.split(kwd)[-1].strip()
+                break
+
+        if not definition:
+            for kwd in self.keywords():
+                if kwd in text:  # General
+                    definition = text.split(kwd)[-1].split(' ')[-1]
+                    if definition:
+                        break
+
+        self.log.debug('Definition found: "{}"'.format(definition or 'N/A'))
         return definition
 
     def ask_wikipedia(self, definition):
@@ -74,6 +88,7 @@ class DefineWord(JessyModule):
         '''
         # TODO: this method should run in a separate process, asynchronously
 
+        is_exact = False
         out = []
         if not wikipedia:
             return out
@@ -84,6 +99,7 @@ class DefineWord(JessyModule):
             for page_title in page_titles:
                 if page_title.lower() == definition:
                     page = wikipedia.page(page_title)
+                    is_exact = True
                     break
             if not page and 'disambiguation' not in page_titles[0]:
                 page = wikipedia.page(page_titles[0])
@@ -93,8 +109,7 @@ class DefineWord(JessyModule):
                                      .split('\n')[0]
                                      .encode('utf-8', 'ignore')).pause(1))
 
-        return out
-
+        return is_exact, out
 
     def ask_duck(self, definition):
         '''
@@ -128,10 +143,9 @@ class DefineWord(JessyModule):
         :param definition:
         :return: A series of sentences that needs to be said.
         '''
-        answer = self.ask_wikipedia(definition)
-        if not answer:
-            answer = self.ask_duck(definition)
-
+        is_exact, answer = self.ask_wikipedia(definition)
+        if not answer or not is_exact:
+            answer = self.ask_duck(definition) or answer
         if answer:
             answer.append(Phrase().text('I hope this helps'))
         else:
@@ -160,7 +174,7 @@ class DefineWord(JessyModule):
 
     @classmethod
     def keywords(cls):
-        return ['define', 'means', 'meaning', 'definition']
+        return ['define', 'means', 'meaning', 'definition', 'what']
 
 
 plugin = DefineWord

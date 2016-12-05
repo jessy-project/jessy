@@ -28,6 +28,7 @@ Abstract module interface
 
 import os
 import time
+import logging
 from abc import ABCMeta, abstractmethod
 from jessy.config import load_config
 
@@ -151,6 +152,7 @@ class JessyModule(object):
         cls._config = load_config(cls.__module__, config)
         cls._mic = mic
         cls._process_registry = registry
+        cls.log = logging.getLogger(cls.__class__.__name__)
 
     def say(self, text):
         '''
