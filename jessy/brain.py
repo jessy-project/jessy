@@ -1,7 +1,6 @@
 # -*- coding: utf-8-*-
 import logging
 import pkgutil
-import os
 from jessy import jessypath
 from jessy.modules import is_valid_module
 
