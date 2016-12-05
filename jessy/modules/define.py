@@ -160,7 +160,7 @@ class DefineWord(JessyModule):
 
     @classmethod
     def keywords(cls):
-        return ['define', 'means', 'meaning', 'definition']
+        return ['define', 'means', 'meaning', 'definition', 'what']
 
 
 plugin = DefineWord
