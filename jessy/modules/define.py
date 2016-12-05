@@ -143,10 +143,9 @@ class DefineWord(JessyModule):
         :param definition:
         :return: A series of sentences that needs to be said.
         '''
-        answer = self.ask_wikipedia(definition)
-        if not answer:
-            answer = self.ask_duck(definition)
-
+        is_exact, answer = self.ask_wikipedia(definition)
+        if not answer or not is_exact:
+            answer = self.ask_duck(definition) or answer
         if answer:
             answer.append(Phrase().text('I hope this helps'))
         else:
