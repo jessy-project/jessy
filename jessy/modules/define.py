@@ -55,14 +55,28 @@ class DefineWord(JessyModule):
         :param text:
         :return:
         '''
-        text = text.lower()
-        definition = ''
-        for kwd in self.keywords():
-            if kwd in text:
-                definition = text.split(kwd)[-1].split(' ')[-1]
-                if definition:
-                    break
+        noise = ['me', 'a', 'the', 'of', 'is']  # Subject for i18n
 
+        # Prepare input text
+        text = text.lower()
+        for token in noise:
+            text = text.replace(' {} '.format(token), ' ')
+
+        # Get the definition
+        definition = ''
+        for kwd in ['define', 'meaning', 'definition', 'what']:
+            if kwd in text:
+                definition = text.split(kwd)[-1].strip()
+                break
+
+        if not definition:
+            for kwd in self.keywords():
+                if kwd in text:  # General
+                    definition = text.split(kwd)[-1].split(' ')[-1]
+                    if definition:
+                        break
+
+        self.log.debug('Definition found: "{}"'.format(definition or 'N/A'))
         return definition
 
     def ask_wikipedia(self, definition):
