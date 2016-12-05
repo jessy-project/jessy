@@ -88,6 +88,7 @@ class DefineWord(JessyModule):
         '''
         # TODO: this method should run in a separate process, asynchronously
 
+        is_exact = False
         out = []
         if not wikipedia:
             return out
@@ -98,6 +99,7 @@ class DefineWord(JessyModule):
             for page_title in page_titles:
                 if page_title.lower() == definition:
                     page = wikipedia.page(page_title)
+                    is_exact = True
                     break
             if not page and 'disambiguation' not in page_titles[0]:
                 page = wikipedia.page(page_titles[0])
@@ -107,8 +109,7 @@ class DefineWord(JessyModule):
                                      .split('\n')[0]
                                      .encode('utf-8', 'ignore')).pause(1))
 
-        return out
-
+        return is_exact, out
 
     def ask_duck(self, definition):
         '''
