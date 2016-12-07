@@ -24,6 +24,7 @@
 
 from jessy.modules import JessyModule, Phrase
 from jessy.modules import _ddg as duck
+from jessy.modules.lib import get_definition
 
 try:
     import wikipedia
@@ -47,37 +48,6 @@ class DefineWord(JessyModule):
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
-
-    def _extract_definition(self, text):
-        '''
-        Extracts definition from the given text
-
-        :param text:
-        :return:
-        '''
-        noise = ['me', 'a', 'the', 'of', 'is']  # Subject for i18n
-
-        # Prepare input text
-        text = text.lower()
-        for token in noise:
-            text = text.replace(' {} '.format(token), ' ')
-
-        # Get the definition
-        definition = ''
-        for kwd in ['define', 'meaning', 'definition', 'what']:
-            if kwd in text:
-                definition = text.split(kwd)[-1].strip()
-                break
-
-        if not definition:
-            for kwd in self.keywords():
-                if kwd in text:  # General
-                    definition = text.split(kwd)[-1].split(' ')[-1]
-                    if definition:
-                        break
-
-        self.log.debug('Definition found: "{}"'.format(definition or 'N/A'))
-        return definition
 
     def ask_wikipedia(self, definition):
         '''
@@ -160,7 +130,7 @@ class DefineWord(JessyModule):
         :param text:
         :return:
         '''
-        definition = self._extract_definition(text)
+        definition = get_definition(text.lower())
         if definition:
             self.say('Let me look...')
             answer = self._get_answer(definition)  # Should go background before saying 'please wait'

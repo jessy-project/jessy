@@ -33,3 +33,6 @@ pyalsaaudio>=0.8.2
 
 # Wikipedia
 wikipedia
+
+# Natural language processing
+nltk

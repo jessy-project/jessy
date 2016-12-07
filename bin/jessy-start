@@ -4,11 +4,7 @@
 import os
 import sys
 import logging
-import yaml
 import argparse
-
-# HACK: remove this away and use virtualenv!
-sys.path.append(os.path.sep.join(os.path.dirname(os.path.abspath(__file__)).split(os.path.sep)[:-1]))
 
 from jessy import Jessy
 from jessy import jessypath
