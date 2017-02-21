@@ -33,6 +33,10 @@ class MPlayerWrapper(JessyModule):
     '''
     MPlayer Wrapper
     '''
+    NAME = 'Player'
+    DESCR = 'Plays online music'
+    IS_SKILL = True
+
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
         self._stopped = False

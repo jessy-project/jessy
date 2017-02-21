@@ -126,6 +126,10 @@ class GNews(JessyModule):
     '''
     Handle GNews
     '''
+    NAME = 'Google News'
+    DESCR = 'Reads Google News'
+    IS_SKILL = True
+
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 

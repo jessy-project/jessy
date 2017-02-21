@@ -28,8 +28,10 @@ from jessy.modules import JessyModule
 
 class GoodBye(JessyModule):
     '''
-    Goodbye
+    Goodbye module.
     '''
+    NAME = 'Goodbye'
+    DESCR = 'This is how I say goodbye to you or getting quiet.'
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)

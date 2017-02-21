@@ -145,7 +145,11 @@ class JessyModule(object):
     Interface to a Jessy module.
     '''
     __metaclass__ = ABCMeta
+
     PRIORITY = 0
+    NAME = ''
+    DESCR = ''
+    IS_SKILL = False
 
     @abstractmethod
     def __init__(cls, config, mic, registry):

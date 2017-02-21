@@ -25,6 +25,9 @@ class HelloJessy(JessyModule):
     '''
     Hello, Jessy!
     '''
+    NAME = 'Greetings'
+    DESCR = 'Says greetings'
+
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 

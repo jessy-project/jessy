@@ -30,6 +30,9 @@ class DecisionMaker(JessyModule):
     '''
     Decision maker
     '''
+    NAME = 'Decision maker'
+    DESCR = 'You can ask to decide to do something or not'
+    IS_SKILL = True
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)

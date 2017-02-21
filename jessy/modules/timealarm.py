@@ -26,6 +26,10 @@ class TimeAlarm(JessyModule):
     '''
     Hello, Jessy!
     '''
+    NAME = 'Alarm'
+    DESCR = 'Allows setup alarm at specific time'
+    IS_SKILL = True
+
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 

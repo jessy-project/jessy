@@ -163,6 +163,10 @@ class TimeAlarm(JessyModule):
     '''
     Hello, Jessy!
     '''
+    NAME = 'Weather'
+    DESCR = 'Tells you weather prognosis'
+    IS_SKILL = True
+
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 

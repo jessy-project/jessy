@@ -131,6 +131,9 @@ class HackerNews(JessyModule):
     Handle GMail
     '''
     PRIORITY = 4
+    NAME = 'Hacker news'
+    DESCR = 'Can tell the latest hacker news'
+    IS_SKILL = True
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
