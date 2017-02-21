@@ -28,6 +28,7 @@ from jessy.modules.lib import get_definition
 
 try:
     import wikipedia
+    from wikipedia import DisambiguationError
 except ImportError as ex:
     wikipedia = None
 
@@ -49,6 +50,16 @@ class DefineWord(JessyModule):
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 
+    def join_for_more(self, data, limit=3):
+        '''
+        Join for more. This joins many options into one sentence with the limitation.
+        '''
+        _data = []
+        for term in (limit and data[:limit] or data):
+            if not term.lower().startswith('all pages beginning with') and not term.lower().startswith('all pages with titles containing'):
+                _data.append(term.split('(')[0].strip())
+        return ', '.join(_data[:-1]) + (limit and ' or {0} and even more'.format(_data[-1]) or ' and {0}'.format(_data[-1]))
+
     def ask_wikipedia(self, definition):
         '''
         Ask Wikipedia for the definition.
@@ -61,24 +72,30 @@ class DefineWord(JessyModule):
         is_exact = False
         out = []
         if not wikipedia:
-            return out
+            return is_exact, out
 
         page_titles = wikipedia.search(definition)
         page = None
         if page_titles:
             for page_title in page_titles:
                 if page_title.lower() == definition:
-                    page = wikipedia.page(page_title)
-                    is_exact = True
-                    break
-            if not page and 'disambiguation' not in page_titles[0]:
-                page = wikipedia.page(page_titles[0])
+                    try:
+                        page = wikipedia.page(page_title)
+                        is_exact = True
+                    except DisambiguationError as ex:
+                        out.append(Phrase().text('This can refer to a many things, such as {0}'.format(self.join_for_more(ex.options, limit=None))))
+                        return is_exact, out
 
-        if page:
+            if not page and 'disambiguation' not in page_titles[0]:
+                try:
+                    page = wikipedia.page(page_titles[0])
+                except Exception as ex:
+                    out.append(Phrase().text(str(ex)))
+
+        if page and not out:
             out.append(Phrase().text(page.content.split('==')[0]
                                      .split('\n')[0]
                                      .encode('utf-8', 'ignore')).pause(1))
-
         return is_exact, out
 
     def ask_duck(self, definition):
@@ -114,11 +131,13 @@ class DefineWord(JessyModule):
         :return: A series of sentences that needs to be said.
         '''
         is_exact, answer = self.ask_wikipedia(definition)
-        if not answer or not is_exact:
+
+        if not is_exact and not answer:
             answer = self.ask_duck(definition) or answer
-        if answer:
-            answer.append(Phrase().text('I hope this helps'))
-        else:
+            if answer:
+                answer.append(Phrase().text('I hope this helps'))
+
+        if not answer:
             answer.append(Phrase().text('Unfortunately, I do not know what means {}'.format(definition)))
 
         return answer
