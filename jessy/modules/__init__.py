@@ -165,11 +165,14 @@ class JessyModule(object):
         :param text:
         :return:
         '''
-        if isinstance(text, str):
-            self._mic.say(text)
-        elif isinstance(text, Phrase):
-            self._mic.say(text.text())
-            time.sleep(text.pause())
+        if not isinstance(text, list) or isinstance(text, tuple):
+            text = [text]
+        for sayable in text:
+            if isinstance(sayable, str):
+                self._mic.say(sayable)
+            elif isinstance(sayable, Phrase):
+                self._mic.say(sayable.text())
+                time.sleep(sayable.pause())
 
     @abstractmethod
     def handle(cls, transcription):
@@ -220,3 +223,4 @@ class JessyModule(object):
         :return:
         '''
         return []
+
