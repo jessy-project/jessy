@@ -152,17 +152,19 @@ class DefineWord(JessyModule):
         :param text:
         :return:
         '''
+        result = 0
         definition = get_definition(text.lower())
         if definition:
             self.say('Let me look...')
             answer = self._get_answer(definition)  # Should go background before saying 'please wait'
             for phrase in answer:
                 self.say(phrase)
+                result += 1
+        return bool(result)
 
     def handle(self, transcription):
         if self.matches(transcription):
-            self._handle(transcription)
-            return True
+            return self._handle(transcription)
 
     @classmethod
     def keywords(cls):
