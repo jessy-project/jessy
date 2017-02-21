@@ -161,7 +161,7 @@ def _handle(text, mic, profile):
 
 class TimeAlarm(JessyModule):
     '''
-    Hello, Jessy!
+    Weather prognosis
     '''
     NAME = 'Weather'
     DESCR = 'Tells you weather prognosis'

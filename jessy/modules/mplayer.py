@@ -31,7 +31,7 @@ from jessy.modules._mplayer import mpwrapper
 
 class MPlayerWrapper(JessyModule):
     '''
-    MPlayer Wrapper
+    Music Player
     '''
     NAME = 'Player'
     DESCR = 'Plays online music'

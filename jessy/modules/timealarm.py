@@ -24,7 +24,7 @@ def _handle(mic, profile):
 
 class TimeAlarm(JessyModule):
     '''
-    Hello, Jessy!
+    Time alarm.
     '''
     NAME = 'Alarm'
     DESCR = 'Allows setup alarm at specific time'
