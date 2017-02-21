@@ -159,7 +159,7 @@ def _handle(text, mic, profile):
         mic.say(
             "I'm sorry. I can't see that far ahead.")
 
-class TimeAlarm(JessyModule):
+class Weather(JessyModule):
     '''
     Weather prognosis
     '''
@@ -181,4 +181,5 @@ class TimeAlarm(JessyModule):
                 'forecast', 'outside', 'hot', 'jacket', 'coat', 'rain']
 
 
-plugin = TimeAlarm
+plugin = Weather
+
