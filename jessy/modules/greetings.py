@@ -14,9 +14,9 @@ def _handle(mic):
         profile -- contains information related to the user (e.g., phone
                    number)
     """
-    messages = ["Who are you? But hello anyway.",
-                "Oh yeah. Hi there",
-                "Hello to you too. But piss off. Please"]
+    messages = ["Hello there",
+                "Hello to you too.",
+                "Hello. I hope you are doing well"]
     message = random.choice(messages)
     mic.say(message)
 
