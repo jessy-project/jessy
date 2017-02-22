@@ -175,7 +175,7 @@ class JessyModule(object):
                 time.sleep(sayable.pause())
 
     @abstractmethod
-    def handle(cls, transcription):
+    def handle(cls, transcription, context=None):
         pass
 
     @classmethod
@@ -194,7 +194,7 @@ class JessyModule(object):
         for word in text.split(' '):
             word = word.lower()
             for match in self.keywords():
-                if match in word:
+                if match == word:
                     return True
 
         return False

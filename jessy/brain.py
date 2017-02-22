@@ -134,16 +134,6 @@ class Brain(object):
         modules.sort(key=lambda module: module.plugin.PRIORITY, reverse=True)
         return modules
 
-    def in_context(self, text):
-        '''
-        Add current context.
-
-        :param text:
-        :return:
-        '''
-
-        return '{0} {1}'.format(' '.join(self._current_context), text).strip()
-
     def query(self, texts):
         """
         Passes user input to the appropriate module, testing it against
@@ -152,18 +142,33 @@ class Brain(object):
         Arguments:
         text -- user input, typically speech, to be parsed by a module
         """
+        skipped_loaders = []
         for module in self.modules:
             for text in texts:
                 try:
                     loader = module.plugin.load(config=self.profile,
                                                 mic=self.mic,
                                                 registry=self.process_registry)
-                    if loader.handle(self.in_context(text)):
-                        self._current_context = loader.context()
-                        return
+                    if self._current_context and self._current_context == loader.NAME:
+                        if loader.handle(text, context=self._current_context):
+                            self._current_context = loader.context()
+                            return
+                    else:
+                        skipped_loaders.append(loader)
                 except Exception as ex:
                     self._logger.error('Failed to execute module: {0}'.format(ex))
                     self.mic.say("I'm sorry. I had some trouble with that operation. Please try again later.")
                 else:
                     self._logger.debug("Handling of phrase '%s' by module '%s' completed", text, module.__name__)
+
+        for loader in skipped_loaders:
+            for text in texts:
+                try:
+                    if loader.handle(text):
+                        self._current_context = loader.context()
+                        return
+                except Exception as ex:
+                    self._logger.error('Failed to execute module (second pass): {0}'.format(ex))
+                    self.mic.say("Ooops... Something went wrong.")
+
         self._logger.debug("No module was able to handle any of these phrases: %r", texts)

@@ -34,7 +34,7 @@ class MPlayerWrapper(JessyModule):
     Music Player
     '''
     NAME = 'Player'
-    DESCR = 'Plays online music'
+    DESCR = '{0} is designed to play online music radio. You can ask to play jazz, rock, pop or any other genres, if it knows.'.format(NAME)
     IS_SKILL = True
 
     def __init__(self, *args, **kwargs):
@@ -103,14 +103,14 @@ class MPlayerWrapper(JessyModule):
             self._get_mp().play()
             self._mic.say("Playing {0}".format(station_name))
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         '''
         Handle the whole thing.
 
         :param transcription:
         :return:
         '''
-        if self.matches(transcription):
+        if context == self.NAME or self.matches(transcription):
             self._handle(transcription.lower())
             return True
 
@@ -119,7 +119,7 @@ class MPlayerWrapper(JessyModule):
         Save context
         :return:
         '''
-        return not self._stopped and self.keywords() or []
+        return not self._stopped and self.NAME or ''
 
     @classmethod
     def keywords(cls):
