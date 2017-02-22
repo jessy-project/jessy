@@ -71,9 +71,14 @@ class SUSEManager(JessyModule):
     '''
     NAME = 'Manager'
     DESCR = 'Allows to get generic information from connected SUSE Manager.'
+    API = 'suma-api'
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
+        self._config = self._config.get(self.module_name(__file__))
+        self.register(self.API, APICall(self._config.get('host'),
+                                        self._config.get('user'),
+                                        self._config.get('password')))
 
     def handle(self, transcription, context=None):
         self.say('I am SUSE Manager')
