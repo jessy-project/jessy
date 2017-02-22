@@ -36,23 +36,28 @@ class DecisionMaker(JessyModule):
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
+        self._long_prefixes = ['I decide that', 'If you ask, then I think', 'I suggest that',
+                               'Stars says that', 'Aligning of quantum fluctuations shows that',
+                               'Solar interference suggests that']
+        self._short_prefixes = ['I think', 'In my opinion', 'To be honest',
+                                'Actually', 'Kind of', 'I would say']
+        self._decisions = ['it is a good idea', 'I would not go for it',
+                           'I would not do that', 'sell it to somebody else, do not do this',
+                           'grab it', 'it is surely a good idea',
+                           'unlikely this will do any good to you',
+                           'it is absolutely a good idea', 'it is no way',
+                           'the answer would be certainly yes',
+                           'this is a stupid thing to do. No, of course.',
+                           'you should do it', 'you would better not do it',
+                           'it is better to refrain from it', 'it is better to go with it']
 
     def handle(self, transcription):
-        msg = None
         if self.matches(transcription):
             transcription = transcription.lower()
             if 'decide' in transcription or 'choose' in transcription:
-                msg = choice(['I think it is a good idea', 'I would not go for it',
-                              'I would not do that', 'sell it to somebody else, do not do this',
-                              'grab it', 'it is surely a good idea',
-                              'unlikely this will do any good to you',
-                              'absolutely', 'no way', 'certainly yes',
-                              'What a stupid thing do to. No, of course!',
-                              'Of course do it! Why even question that!'])
+                self.say('{0} {1}'.format(choice(self._long_prefixes), choice(self._decisions)))
             elif all_words(transcription, 'yes', 'or', 'no', 'not'):
-                msg = choice(['yes', 'no'])
-
-            self._mic.say(msg)
+                self.say('{0} {1}'.format(choice(self._short_prefixes), choice(['yes', 'no'])))
             return True
 
     @classmethod
