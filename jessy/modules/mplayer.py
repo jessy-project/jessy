@@ -110,7 +110,7 @@ class MPlayerWrapper(JessyModule):
         :param transcription:
         :return:
         '''
-        if self.matches(transcription):
+        if context == self.NAME or self.matches(transcription):
             self._handle(transcription.lower())
             return True
 
@@ -119,7 +119,7 @@ class MPlayerWrapper(JessyModule):
         Save context
         :return:
         '''
-        return not self._stopped and self.keywords() or []
+        return not self._stopped and self.NAME or ''
 
     @classmethod
     def keywords(cls):
