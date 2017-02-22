@@ -158,6 +158,12 @@ class JessyModule(object):
         cls._process_registry = registry
         cls.log = logging.getLogger(cls.__class__.__name__)
 
+    def module_name(self, target):
+        '''
+        Returns module name.
+        '''
+        return os.path.basename(target).split('.')[0]
+
     def register(self, id, obj):
         '''
         Register object to the registry.
