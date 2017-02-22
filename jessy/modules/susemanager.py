@@ -24,6 +24,45 @@
 
 from random import choice
 from jessy.modules import JessyModule
+import xmlrpclib
+
+
+class APICall(object):
+    def __init__(self, host, user, password):
+        self.__host = host
+        self.__user = user
+        self.__password = password
+        self.__url = 'http://{0}/rpc/api'.format(host)
+        self.__client = xmlrpclib.Server(self.__url, verbose=0)
+        self.__token = ''
+
+    def _auth(self):
+        self.__token = self.__client.auth.login(self.__user, self.__password)
+
+    def list_users(self):
+        return self('user.list_users')
+
+    def list_active_systems(self):
+        return self('system.list_active_systems')
+
+    def list_channels(self):
+        return self('channel.list_all_channels')
+
+    def list_patches(self, channel):
+        return self('channel.software.list_errata', channel)
+
+    def list_affected_systems(self, advisory):
+        return self('errata.list_affected_systems')
+
+    def list_subscribed_systems(self, channel):
+        return self('channel.software.list_subscribed_systems', channel)
+
+    def __call__(self, mtd, *args, **kwargs):
+        for x in range(2):
+            try:
+                return getattr(self.__client, mtd)(self.__token, *args, **kwargs)
+            except Exception as ex:
+                self._auth()
 
 
 class SUSEManager(JessyModule):
