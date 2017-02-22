@@ -158,6 +158,18 @@ class JessyModule(object):
         cls._process_registry = registry
         cls.log = logging.getLogger(cls.__class__.__name__)
 
+    def register(self, id, obj):
+        '''
+        Register object to the registry.
+        '''
+        self._process_registry.add_process(self.__class__.__name__, id, obj)
+
+    def get_registry(self, id):
+        '''
+        Get an object from the registry
+        '''
+        return self._process_registry.process(self.__class__.__name__, id)
+
     def say(self, text):
         '''
         An alias to the mic "say"
