@@ -36,7 +36,7 @@ class GoodBye(JessyModule):
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         if self.matches(transcription):
             transcription = transcription.lower()
             if 'goodbye' in transcription:

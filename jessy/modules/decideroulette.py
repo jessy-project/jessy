@@ -51,7 +51,7 @@ class DecisionMaker(JessyModule):
                            'you should do it', 'you would better not do it',
                            'it is better to refrain from it', 'it is better to go with it']
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         if self.matches(transcription):
             transcription = transcription.lower()
             if 'decide' in transcription or 'choose' in transcription:

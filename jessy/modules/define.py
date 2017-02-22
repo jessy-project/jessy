@@ -162,7 +162,7 @@ class DefineWord(JessyModule):
                 result += 1
         return bool(result)
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         if self.matches(transcription):
             return self._handle(transcription)
 

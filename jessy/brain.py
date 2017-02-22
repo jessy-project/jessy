@@ -150,7 +150,7 @@ class Brain(object):
                                                 mic=self.mic,
                                                 registry=self.process_registry)
                     if self._current_context and self._current_context == loader.NAME:
-                        if loader.handle(text):
+                        if loader.handle(text, context=self._current_context):
                             self._current_context = loader.context()
                             return
                     else:

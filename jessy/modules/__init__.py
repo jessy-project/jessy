@@ -175,7 +175,7 @@ class JessyModule(object):
                 time.sleep(sayable.pause())
 
     @abstractmethod
-    def handle(cls, transcription):
+    def handle(cls, transcription, context=None):
         pass
 
     @classmethod

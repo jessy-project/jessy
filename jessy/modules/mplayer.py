@@ -103,7 +103,7 @@ class MPlayerWrapper(JessyModule):
             self._get_mp().play()
             self._mic.say("Playing {0}".format(station_name))
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         '''
         Handle the whole thing.
 

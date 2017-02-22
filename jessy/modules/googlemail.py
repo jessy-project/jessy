@@ -138,7 +138,7 @@ class GMail(JessyModule):
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
 
-    def handle(self, transcription):
+    def handle(self, transcription, context=None):
         if self.matches(transcription):
             _handle(self._mic, self._config)
             return True
