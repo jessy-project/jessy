@@ -34,7 +34,7 @@ class MPlayerWrapper(JessyModule):
     Music Player
     '''
     NAME = 'Player'
-    DESCR = 'Plays online music'
+    DESCR = '{0} is designed to play online music radio. You can ask to play jazz, rock, pop or any other genres, if it knows.'.format(NAME)
     IS_SKILL = True
 
     def __init__(self, *args, **kwargs):
