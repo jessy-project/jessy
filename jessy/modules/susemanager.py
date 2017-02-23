@@ -132,18 +132,20 @@ class SUSEManager(JessyModule):
         '''
         Say status of the dashboard.
         '''
+        changed = False
         # Shortcuts
         def ph(text):    # Creates phrase
             return Phrase().text(text)
         def pl(amount):  # English plurals
             return amount and 's' or ''
 
-        out = []
+        out = [ph('status')]
         is_full = status.get('is_full')
-        del status['is_full']
+        if 'is_full' in status:
+            del status['is_full']
 
         if is_full:
-            out.append(ph('Status of SUSE Manager'))
+            out.append(ph('of suse manager'))
             for t_key, t_label in self.status_tpl:
                 st_val = status.get(t_key)
                 if st_val:
@@ -151,10 +153,20 @@ class SUSEManager(JessyModule):
                                                  are_is=(st_val > 1 and 'are' or 'is'))))
             if not status:
                 out.append(ph('unknown'))
-        else:                                # Says only difference from the last
-            pass
-
+        else:
+            if not status:
+                out.append(ph('unchanged'))
+            else:
+                changed = True
+                out.append(ph('changed to'))
+                for t_key, t_label in self.status_tpl:
+                    st_val = status.get(t_key)
+                    if st_val:
+                        out.append(ph(t_label.format(val=st_val, pl=pl(st_val),
+                                                     are_is=(st_val > 1 and 'are' or 'is'))))
+        status['is_full'] = bool(is_full)
         self.say(out)
+        return changed
 
     def _compare_status(self, status):
         '''
