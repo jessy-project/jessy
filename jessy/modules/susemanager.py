@@ -80,6 +80,14 @@ class SUSEManager(JessyModule):
                                         self._config.get('user'),
                                         self._config.get('password')))
 
+    def _compare_status(self, status):
+        '''
+        Compare data with the latest status.
+        '''
+        # Not implemented yet
+        return status
+
+
     def handle(self, transcription, context=None):
         self.say('I am SUSE Manager')
         return True
