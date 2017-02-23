@@ -65,7 +65,7 @@ class APICall(object):
                 try:
                     self._auth()
                 except Exception as ex:
-                    raise Exception('Authentication error to {0}'.format(self.__url)
+                    raise Exception('Authentication error to {0}'.format(self.__url))
 
 
 class SUSEManager(JessyModule):
