@@ -86,7 +86,7 @@ class SUSEManager(JessyModule):
 
     @classmethod
     def keywords(cls):
-        return ['manager']
+        return ['manager', 'status']
 
 
 plugin = SUSEManager
