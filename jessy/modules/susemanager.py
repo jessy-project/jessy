@@ -23,7 +23,7 @@
 # SOFTWARE.
 
 from random import choice
-from jessy.modules import JessyModule
+from jessy.modules import JessyModule, all_words, any_words, Phrase
 import xmlrpclib
 
 
@@ -79,6 +79,39 @@ class SUSEManager(JessyModule):
         self.register(self.API, APICall(self._config.get('host'),
                                         self._config.get('user'),
                                         self._config.get('password')))
+
+    def _get_dashboard_status(self):
+        '''
+        Collect status from the dashboard.
+        '''
+        api = self.get_registry(self.API)
+
+        # Get primary data
+        _known_users = api.list_users()
+        _active_systems = api.list_active_systems()
+        _known_channels = api.list_channels()
+        _known_advisories = {}
+        _affected_channels = []
+
+        for channel in _known_channels:
+            patches = api.list_patches(channel['label'])
+            if patches:
+                _affected_channels.append(channel['label'])
+
+        _affected_machines = {}
+        for ch_label in affected:
+            for machine in api.list_subscribed_systems(ch_label):
+                _affected_machines['name'] = machine['name']
+                _affected_machines['id'] = machine['id']
+
+        return {'users': len(_known_users),
+                'systems': len(_active_systems),
+                'channels': len(_known_channels),
+                'advisories': len(_known_advisories),
+                'affected_channels': len(_affected_channels),
+                'affected_machines': len(_affected_machines),
+                'is_full': True,
+        }
 
     def _compare_status(self, status):
         '''
