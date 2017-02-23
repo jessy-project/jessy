@@ -102,7 +102,7 @@ class SUSEManager(JessyModule):
                 _affected_channels.append(channel['label'])
 
         _affected_machines = {}
-        for ch_label in affected:
+        for ch_label in _affected_channels:
             for machine in api.list_subscribed_systems(ch_label):
                 _affected_machines['name'] = machine['name']
                 _affected_machines['id'] = machine['id']
