@@ -81,6 +81,15 @@ class SUSEManager(JessyModule):
 
     def __init__(self, *args, **kwargs):
         JessyModule.__init__(self, *args, **kwargs)
+        self.status_tpl = (
+            ('users', 'there {are_is} {val} user{pl}'),
+            ('systems', 'of known {val} system{pl}'),
+            ('channels', 'and {are_is} {val} channel{pl} to use'),
+            ('advisories', '{val} advisory{pl}'),  # Technically typo "advisorys"
+                                                   # but sounds on the synthesizer right.
+            ('affected_channels', 'however {val} channel{pl} needs patches'),
+            ('affected_machines', 'and {val} machine{pl} needs updates'),
+        )
         self._config = self._config.get(self.module_name(__file__))
         self.register(self.API, APICall(self._config.get('host'),
                                         self._config.get('user'),
@@ -135,15 +144,7 @@ class SUSEManager(JessyModule):
 
         if is_full:
             out.append(ph('Status of SUSE Manager'))
-            tpl = (('users', '{are_is} {val} user{pl}'),
-                   ('systems', 'known {val} system{pl}'),
-                   ('channels', '{are_is} {val} channel{pl}'),
-                   ('advisories', '{val} advisory{pl}'),  # Technically typo "advisorys"
-                                                          # but sounds on the synthesizer right.
-                   ('affected_channels', '{val} channel{pl} needs patches'),
-                   ('affected_machines', '{val} machine{pl} needs update'),
-            )
-            for t_key, t_label in tpl:
+            for t_key, t_label in self.status_tpl:
                 st_val = status.get(t_key)
                 if st_val:
                     out.append(ph(t_label.format(val=st_val, pl=pl(st_val),
