@@ -113,6 +113,41 @@ class SUSEManager(JessyModule):
                 'is_full': True,
         }
 
+    def _say_dashboard_status(self, status):
+        '''
+        Say status of the dashboard.
+        '''
+        # Shortcuts
+        def ph(text):    # Creates phrase
+            return Phrase().text(text)
+        def pl(amount):  # English plurals
+            return amount and 's' or ''
+
+        out = []
+        is_full = status.get('is_full')
+        del status['is_full']
+
+        if is_full:
+            out.append(ph('Status of SUSE Manager'))
+            tpl = {'users': '{val} user{pl}',
+                   'systems': 'known {val} system{pl}',
+                   'channels': 'there {are_is} {val} channel{pl}',
+                   'advisories': '{val} advisory{pl}',  # Technically typo "advisorys"
+                                                        # but sounds on the synthesizer right.
+                   'affected_channels': '{val} channel{pl} synchronized',
+                   'affected_machines': 'Warning. {val} machine{pl} affected',
+            }
+            for st_key, st_val in status.items():
+                if st_val:
+                    out.append(ph(tpl[st_key].format(val=st_val, pl=pl(st_val),
+                                                     are_is=(st_val > 1 and 'are' or 'is'))))
+            if not status:
+                out.append(ph('unknown'))
+        else:                                # Says only difference from the last
+            pass
+
+        self.say(out)
+
     def _compare_status(self, status):
         '''
         Compare data with the latest status.
