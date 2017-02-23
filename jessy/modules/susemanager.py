@@ -132,18 +132,19 @@ class SUSEManager(JessyModule):
 
         if is_full:
             out.append(ph('Status of SUSE Manager'))
-            tpl = {'users': '{val} user{pl}',
-                   'systems': 'known {val} system{pl}',
-                   'channels': 'there {are_is} {val} channel{pl}',
-                   'advisories': '{val} advisory{pl}',  # Technically typo "advisorys"
-                                                        # but sounds on the synthesizer right.
-                   'affected_channels': '{val} channel{pl} synchronized',
-                   'affected_machines': 'Warning. {val} machine{pl} affected',
-            }
-            for st_key, st_val in status.items():
+            tpl = (('users', '{are_is} {val} user{pl}'),
+                   ('systems', 'known {val} system{pl}'),
+                   ('channels', '{are_is} {val} channel{pl}'),
+                   ('advisories', '{val} advisory{pl}'),  # Technically typo "advisorys"
+                                                          # but sounds on the synthesizer right.
+                   ('affected_channels', '{val} channel{pl} needs patches'),
+                   ('affected_machines', '{val} machine{pl} needs update'),
+            )
+            for t_key, t_label in tpl:
+                st_val = status.get(t_key)
                 if st_val:
-                    out.append(ph(tpl[st_key].format(val=st_val, pl=pl(st_val),
-                                                     are_is=(st_val > 1 and 'are' or 'is'))))
+                    out.append(ph(t_label.format(val=st_val, pl=pl(st_val),
+                                                 are_is=(st_val > 1 and 'are' or 'is'))))
             if not status:
                 out.append(ph('unknown'))
         else:                                # Says only difference from the last
