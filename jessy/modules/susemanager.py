@@ -62,7 +62,10 @@ class APICall(object):
             try:
                 return getattr(self.__client, mtd)(self.__token, *args, **kwargs)
             except Exception as ex:
-                self._auth()
+                try:
+                    self._auth()
+                except Exception as ex:
+                    raise Exception('Authentication error to {0}'.format(self.__url)
 
 
 class SUSEManager(JessyModule):
