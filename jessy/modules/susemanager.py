@@ -212,10 +212,11 @@ class SUSEManager(JessyModule):
 
     def handle(self, transcription, context=None):
         if self.matches(transcription):
-            self.say('It might take a bit')
-            status = self._compare_status(self._get_dashboard_status())
-            self.say('OK, got it.')
-            self._say_dashboard_status(status)
+            self.say('OK')
+            status = self._get_dashboard_status()
+            status_diff = self._compare_status(status)
+            if self._say_dashboard_status(status_diff) or status_diff.get('is_full'):
+                self._save_status(status)
 
             return True
 
