@@ -157,8 +157,11 @@ class SUSEManager(JessyModule):
 
 
     def handle(self, transcription, context=None):
-        self.say('I am SUSE Manager')
-        return True
+        if self.matches(transcription):
+            self.say('Let me ask suse manager')
+            self._say_dashboard_status(self._compare_status(self._get_dashboard_status()))
+
+            return True
 
     @classmethod
     def keywords(cls):
