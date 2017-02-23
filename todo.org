@@ -1,4 +1,4 @@
 TODO during the HackWeek
 
-* TODO create comparable status
-* TODO create full status
+* TODO create comparable status for SUSE Manager
+* DONE create full status for SUSE Manager
