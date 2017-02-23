@@ -162,8 +162,10 @@ class SUSEManager(JessyModule):
 
     def handle(self, transcription, context=None):
         if self.matches(transcription):
-            self.say('Let me ask suse manager')
-            self._say_dashboard_status(self._compare_status(self._get_dashboard_status()))
+            self.say('It might take a bit')
+            status = self._compare_status(self._get_dashboard_status())
+            self.say('OK, got it.')
+            self._say_dashboard_status(status)
 
             return True
 
