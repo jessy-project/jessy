@@ -184,8 +184,30 @@ class SUSEManager(JessyModule):
         '''
         Compare data with the latest status.
         '''
-        # Not implemented yet
-        return status
+        t_path = self._config.get('reports')
+        if not t_path:  # We are not reading anything
+            return status
+
+        reports = []
+        for fname in os.listdir(t_path):
+            if not fname.endswith('.yml'):
+                continue
+            try:
+                int(fname.split('.')[0])
+                reports.append(fname)
+            except Exception as ex:
+                continue
+        reports = list(reversed(sorted(reports)))
+        if not reports:
+            return status
+
+        diff = {'is_full': False}
+        prev_status = yaml.load(open(os.path.join(t_path, reports[0])))  # Latest
+        for t_key,t_label in self.status_tpl:
+            if status.get(t_key) != prev_status.get(t_key):
+                diff[t_key] = status.get(t_key)
+
+        return diff
 
 
     def handle(self, transcription, context=None):
