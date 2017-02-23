@@ -168,6 +168,18 @@ class SUSEManager(JessyModule):
         self.say(out)
         return changed
 
+    def _save_status(self, status):
+        '''
+        Saves status to the destination directory.
+        '''
+        t_path = self._config.get('reports')
+        if not t_path:  # We are not saving anything
+            return
+
+        #del status['is_full']
+        with open(os.path.join(t_path, str(int(time.time())) + '.yml'), 'w') as report:
+            report.write(yaml.dump(status, default_flow_style=False) + os.linesep)
+
     def _compare_status(self, status):
         '''
         Compare data with the latest status.
