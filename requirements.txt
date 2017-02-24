@@ -36,3 +36,6 @@ wikipedia
 
 # Natural language processing
 nltk
+
+# sox, also requires apt-get install sox
+sox
