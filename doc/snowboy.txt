@@ -1,0 +1,10 @@
+Docs:
+docs.kitt.ai/snowboy
+
+URL:
+https://s3-us-west-2.amazonaws.com/snowboy/snowboy-releases/rpi-arm-raspbian-8.0-1.1.0.tar.bz2
+
+Setup:
+1. apt-get install pyaudio sox
+2. Download above
+3. Have your model
